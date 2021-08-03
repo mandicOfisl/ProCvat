@@ -8,10 +8,11 @@
     android:orientation="vertical">
 
     <ImageView
+        android:id="@+id/ivSplash"
         android:layout_width="match_parent"
         android:layout_height="@dimen/ivSplash_height"
         android:src="@drawable/ic_flowers"
-        android:padding="70dp"></ImageView>
+        android:padding="@dimen/ivSplash_padding"></ImageView>
 
     <TextView
         android:layout_width="wrap_content"

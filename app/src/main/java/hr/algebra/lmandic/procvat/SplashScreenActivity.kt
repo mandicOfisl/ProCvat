@@ -1,8 +1,9 @@
 package hr.algebra.lmandic.procvat
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+import hr.algebra.lmandic.procvat.framework.applyAnimation
 
 class SplashScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -10,10 +11,13 @@ class SplashScreenActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash_screen)
 
         startAnimations()
-        redirect()
+        //redirect()
     }
 
     private fun startAnimations() {
+        val ivSplash = findViewById<ImageView>(R.id.ivSplash)
+        ivSplash.applyAnimation(R.anim.scale)
+        ivSplash.applyAnimation(R.anim.blink)
 
 
     }
