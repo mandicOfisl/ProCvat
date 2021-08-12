@@ -12,13 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/ivSplash_height"
         android:src="@drawable/ic_flowers"
-        android:padding="@dimen/ivSplash_padding"></ImageView>
+        android:contentDescription="@string/splash_screen_img"
+        android:padding="@dimen/ivSplash_padding"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/ucitavanje"
-        android:layout_gravity="center">
-    </TextView>
+        android:layout_gravity="center"/>
 
 </LinearLayout>
