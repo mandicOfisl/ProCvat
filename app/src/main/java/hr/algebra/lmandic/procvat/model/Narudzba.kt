@@ -5,7 +5,7 @@ data class Narudzba(
     var dokumentId: Int,
     var artiklId: Int,
     var datumNarudzbe: String,
-    var kolicina: Int,
+    var kolicina: Int?,
     var statusId: Int,
     var korisnikId: Int
 )

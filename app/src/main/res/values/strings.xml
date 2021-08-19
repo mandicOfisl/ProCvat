@@ -2,4 +2,9 @@
     <string name="app_name">ProCvat</string>
     <string name="ucitavanje">Učitavanje</string>
     <string name="splash_screen_img">splash screen img</string>
+    <string name="prijavi_se">Prijavi se</string>
+    <string name="lozinka">Lozinka</string>
+    <string name="korisnicko_ime">Korisničko ime</string>
+    <string name="cvice">Cviće</string>
+    <string name="wrong_password">Krivo korisničko ime ili lozinka.</string>
 </resources>

@@ -1,9 +1,14 @@
 package hr.algebra.lmandic.procvat
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import hr.algebra.lmandic.procvat.framework.applyAnimation
+import hr.algebra.lmandic.procvat.framework.startActivity
+
+private const val DELAY : Long = 3000
 
 class SplashScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,10 +24,12 @@ class SplashScreenActivity : AppCompatActivity() {
         ivSplash.applyAnimation(R.anim.scale)
         ivSplash.applyAnimation(R.anim.blink)
 
-
     }
 
     private fun redirect() {
-        TODO("Not yet implemented")
+        Handler(Looper.getMainLooper()).postDelayed(
+            {startActivity<LoginActivity>()},
+            DELAY
+        )
     }
 }

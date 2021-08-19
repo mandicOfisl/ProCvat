@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity"
+    android:padding="50dp">
+
+    <ImageView
+        android:id="@+id/ivFlowers"
+        android:layout_width="wrap_content"
+        android:layout_height="120dp"
+        android:src="@drawable/ic_flowers"
+        android:contentDescription="@string/cvice"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/ivFlowers"
+        android:text="@string/prijavi_se"
+        android:textColor="@color/black"
+        android:textSize="48sp"
+        android:gravity="center"
+        android:layout_marginVertical="30dp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivFlowers"
+        android:id="@+id/etUsername"
+        android:inputType="textNoSuggestions"
+        android:hint="@string/korisnicko_ime"
+        android:layout_marginTop="20dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etUsername"
+        android:id="@+id/etPassword"
+        android:hint="@string/lozinka"
+        android:inputType="textPassword"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/btnLogin"
+        android:enabled="false"
+        android:text="@string/prijavi_se"
+        android:paddingHorizontal="80dp"
+        android:layout_marginTop="80dp" />
+
+</RelativeLayout>
