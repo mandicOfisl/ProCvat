@@ -1,7 +1,7 @@
 package hr.algebra.lmandic.procvat.model
 
 data class Prodaja(
-    var id: Int?,
+    var _id: Int?,
     var dokumentId: Int,
     var artiklId: Int,
     var skladisteId: Int,

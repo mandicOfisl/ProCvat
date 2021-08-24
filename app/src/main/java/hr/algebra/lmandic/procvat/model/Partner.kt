@@ -1,7 +1,7 @@
 package hr.algebra.lmandic.procvat.model
 
 data class Partner(
-    var id: Int?,
+    var _id: Int?,
     var naziv: String,
     var oib: String?,
     var adresa: String?,

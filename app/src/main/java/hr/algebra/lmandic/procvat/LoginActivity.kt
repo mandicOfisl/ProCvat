@@ -9,7 +9,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import hr.algebra.lmandic.procvat.databinding.ActivityLoginBinding
+import hr.algebra.lmandic.procvat.framework.sendBroadcast
 import hr.algebra.lmandic.procvat.framework.startActivity
+import hr.algebra.lmandic.procvat.model.Korisnik
 
 
 class LoginActivity : AppCompatActivity() {
@@ -35,16 +37,21 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.etUsername.addTextChangedListener(textWatcher)
+        binding.etPassword.addTextChangedListener(textWatcher)
 
         binding.btnLogin.setOnClickListener {
             if (authenticateUser()) redirect() else handleIncorrectInput()
+        }
+
+        binding.btnNewUser?.setOnClickListener {
+            Handler(Looper.getMainLooper()).post { startActivity<NewUserActivity>() }
         }
     }
 
     private fun handleIncorrectInput() {
         binding.etPassword.setText("", TextView.BufferType.EDITABLE)
 
-        Toast.makeText(this, getString(R.string.wrong_password), Toast.LENGTH_SHORT)
+        Toast.makeText(this, getString(R.string.wrong_password), Toast.LENGTH_SHORT).show()
     }
 
     private fun redirect() {
@@ -52,11 +59,30 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun authenticateUser() : Boolean {
-        //dohvati usera iz baze
+        val inputUsername = binding.etUsername.text.toString()
         val inputPass = binding.etPassword.text.toString()
-        //provjeri lozinku sa inputom
 
-        return true
+        val korisnikCursor = contentResolver.query(
+            KORISNICI_PROVIDER_CONTENT_URI,
+            null,
+            "${Korisnik::korisnickoIme} LIKE ?",
+            arrayOf(inputUsername),
+            null,
+        )
+
+        if (korisnikCursor != null){
+            while (korisnikCursor.moveToNext()){
+                if (korisnikCursor.getString(korisnikCursor.getColumnIndex(Korisnik::lozinka.name))
+                    == inputPass){
+                        sendBroadcast<ProcvatReceiver>()
+                        return true
+                }
+            }
+        }
+
+        korisnikCursor?.close()
+
+        return false
     }
 
     private fun toggleButton() {

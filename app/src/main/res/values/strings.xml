@@ -7,4 +7,26 @@
     <string name="korisnicko_ime">Korisničko ime</string>
     <string name="cvice">Cviće</string>
     <string name="wrong_password">Krivo korisničko ime ili lozinka.</string>
+    <string name="kreiraj_novog_korisnika">Kreiraj novog korisnika</string>
+    <string name="kreiraj">Kreiraj</string>
+    <string name="ponovljena_lozinka">Ponovljena lozinka</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome!"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="filtriraj">Filtriraj:</string>
+    <string name="novi_korisnik">Novi korisnik</string>
+    <string name="korisnik_je_kreiran">Korisnik je kreiran!</string>
+    <string name="stanje_skladista">Stanje skladišta</string>
+    <string name="branje">Branje</string>
+    <string name="kupci_i_narudzbe">Kupci i narudžbe</string>
+    <string name="unos_artikala">Unos artikala</string>
+    <string name="korisnicke_postavke">Korisničke postavke</string>
 </resources>

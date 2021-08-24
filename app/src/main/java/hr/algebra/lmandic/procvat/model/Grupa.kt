@@ -1,6 +1,6 @@
 package hr.algebra.lmandic.procvat.model
 
 data class Grupa(
-    var id: Int?,
+    var _id: Int?,
     var naziv: String
 )
