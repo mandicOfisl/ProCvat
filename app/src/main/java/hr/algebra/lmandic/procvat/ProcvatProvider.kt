@@ -6,7 +6,7 @@ import android.net.Uri
 import hr.algebra.lmandic.procvat.dao.ProcvatRepo
 import hr.algebra.lmandic.procvat.dao.ProcvatSqlHelper
 import hr.algebra.lmandic.procvat.factory.getProcvatRepo
-import hr.algebra.lmandic.procvat.model.*
+import hr.algebra.lmandic.procvat.dao.entities.*
 
 private const val AUTHORITY = "hr.algebra.lmandic.procvat.api.provider"
 

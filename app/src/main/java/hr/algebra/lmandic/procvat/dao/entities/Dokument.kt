@@ -1,6 +1,11 @@
-package hr.algebra.lmandic.procvat.model
+package hr.algebra.lmandic.procvat.dao.entities
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
 data class Dokument(
+    @PrimaryKey
     var _id: Int?,
     var vrstaDokumentaId: Int,
     var skladisteId: Int,

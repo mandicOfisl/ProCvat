@@ -5,7 +5,7 @@ import android.content.Context
 import android.util.Log
 import hr.algebra.lmandic.procvat.ARTIKLI_PROVIDER_CONTENT_URI
 import hr.algebra.lmandic.procvat.framework.downloadPicture
-import hr.algebra.lmandic.procvat.model.Artikl
+import hr.algebra.lmandic.procvat.dao.entities.Artikl
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.Call

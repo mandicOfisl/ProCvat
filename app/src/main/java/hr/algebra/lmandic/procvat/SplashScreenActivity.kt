@@ -9,7 +9,7 @@ import hr.algebra.lmandic.procvat.databinding.ActivitySplashScreenBinding
 import hr.algebra.lmandic.procvat.framework.applyAnimation
 import hr.algebra.lmandic.procvat.framework.getBooleanPreference
 import hr.algebra.lmandic.procvat.framework.startActivity
-import hr.algebra.lmandic.procvat.model.Artikl
+import hr.algebra.lmandic.procvat.dao.entities.Artikl
 
 private const val DELAY : Long = 3000
 

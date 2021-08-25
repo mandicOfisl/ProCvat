@@ -7,7 +7,7 @@ import android.text.TextWatcher
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import hr.algebra.lmandic.procvat.databinding.ActivityNewUserBinding
-import hr.algebra.lmandic.procvat.model.Korisnik
+import hr.algebra.lmandic.procvat.dao.entities.Korisnik
 
 class NewUserActivity : AppCompatActivity() {
 

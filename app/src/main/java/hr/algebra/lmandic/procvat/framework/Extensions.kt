@@ -13,10 +13,10 @@ import hr.algebra.lmandic.procvat.ARTIKLI_PROVIDER_CONTENT_URI
 import hr.algebra.lmandic.procvat.BOJE_PROVIDER_CONTENT_URI
 import hr.algebra.lmandic.procvat.NARUDZBE_PROVIDER_CONTENT_URI
 import hr.algebra.lmandic.procvat.STANJA_SKLADISTA_PROVIDER_CONTENT_URI
-import hr.algebra.lmandic.procvat.model.Artikl
-import hr.algebra.lmandic.procvat.model.Boja
-import hr.algebra.lmandic.procvat.model.Narudzba
-import hr.algebra.lmandic.procvat.model.StanjeSkladista
+import hr.algebra.lmandic.procvat.dao.entities.Artikl
+import hr.algebra.lmandic.procvat.dao.entities.Boja
+import hr.algebra.lmandic.procvat.dao.entities.Narudzba
+import hr.algebra.lmandic.procvat.dao.entities.StanjeSkladista
 
 
 fun View.applyAnimation(resourceId: Int)

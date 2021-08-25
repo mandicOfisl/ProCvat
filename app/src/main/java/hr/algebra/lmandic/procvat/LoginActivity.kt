@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import hr.algebra.lmandic.procvat.databinding.ActivityLoginBinding
 import hr.algebra.lmandic.procvat.framework.sendBroadcast
 import hr.algebra.lmandic.procvat.framework.startActivity
-import hr.algebra.lmandic.procvat.model.Korisnik
+import hr.algebra.lmandic.procvat.dao.entities.Korisnik
 
 
 class LoginActivity : AppCompatActivity() {

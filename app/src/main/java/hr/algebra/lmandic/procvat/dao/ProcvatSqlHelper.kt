@@ -5,7 +5,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import hr.algebra.lmandic.procvat.model.*
+import hr.algebra.lmandic.procvat.dao.entities.*
 
 
 
@@ -143,14 +143,11 @@ class ProcvatSqlHelper(context: Context?)
         val UNOS_STANJA_ARTIKLA_CREATE_TABLE =
             "CREATE TABLE IF NOT EXISTS $UNOS_STANJA_ARTIKLA_TABLE_NAME(" +
                     "${UnosStanjaArtikla::_id.name} INTEGER NOT NULL UNIQUE," +
-                    "${UnosStanjaArtikla::dokumentId.name} INTEGER NOT NULL UNIQUE," +
                     "${UnosStanjaArtikla::artiklId.name} INTEGER NOT NULL," +
                     "${UnosStanjaArtikla::skladisteId.name} INTEGER NOT NULL," +
-                    "${UnosStanjaArtikla::vrstaDokumentaId.name} INTEGER NOT NULL," +
                     "${UnosStanjaArtikla::kolicina.name} INTEGER NOT NULL," +
                     "${UnosStanjaArtikla::korisnikId.name} INTEGER NOT NULL," +
                     "PRIMARY KEY(${UnosStanjaArtikla::_id.name}," +
-                    "${UnosStanjaArtikla::dokumentId.name})" +
                     "FOREIGN KEY(\"artiklId\") REFERENCES \"Artikl\"(\"id\")," +
                     "FOREIGN KEY(\"dokumentId\") REFERENCES \"Dokument\"(\"id\")," +
                     "FOREIGN KEY(\"vrstaDokumentaId\") REFERENCES \"VrstaDokumenta\"(\"id\")," +
@@ -164,7 +161,6 @@ class ProcvatSqlHelper(context: Context?)
                 "${Prodaja::dokumentId.name} INTEGER NOT NULL UNIQUE," +
                 "${Prodaja::artiklId.name} INTEGER NOT NULL," +
                 "${Prodaja::skladisteId.name} INTEGER NOT NULL," +
-                "${Prodaja::vrstaDokumentaId.name} INTEGER NOT NULL," +
                 "${Prodaja::kolicina.name} INTEGER NOT NULL," +
                 "${Prodaja::korisnikId.name} INTEGER NOT NULL," +
                 "${Prodaja::statusId.name} INTEGER NOT NULL," +
