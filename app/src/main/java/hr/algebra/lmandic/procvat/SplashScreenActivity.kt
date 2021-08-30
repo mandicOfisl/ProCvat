@@ -5,11 +5,11 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
+import hr.algebra.lmandic.procvat.dao.entities.Artikl
 import hr.algebra.lmandic.procvat.databinding.ActivitySplashScreenBinding
 import hr.algebra.lmandic.procvat.framework.applyAnimation
 import hr.algebra.lmandic.procvat.framework.getBooleanPreference
 import hr.algebra.lmandic.procvat.framework.startActivity
-import hr.algebra.lmandic.procvat.dao.entities.Artikl
 
 private const val DELAY : Long = 3000
 
@@ -35,7 +35,7 @@ class SplashScreenActivity : AppCompatActivity() {
     private fun redirect() {
         if (getBooleanPreference("first_run")){
 
-            insertDummyData()
+            //insertDummyData()
 
             Handler(Looper.getMainLooper()).postDelayed(
                 {startActivity<NewUserActivity>()},

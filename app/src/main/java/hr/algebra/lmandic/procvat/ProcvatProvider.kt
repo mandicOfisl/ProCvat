@@ -2,11 +2,15 @@ package hr.algebra.lmandic.procvat
 
 import android.content.*
 import android.database.Cursor
+import android.database.MatrixCursor
 import android.net.Uri
+import hr.algebra.lmandic.procvat.dao.ProcvatDao
+import hr.algebra.lmandic.procvat.dao.ProcvatDatabase
 import hr.algebra.lmandic.procvat.dao.ProcvatRepo
 import hr.algebra.lmandic.procvat.dao.ProcvatSqlHelper
-import hr.algebra.lmandic.procvat.factory.getProcvatRepo
 import hr.algebra.lmandic.procvat.dao.entities.*
+import hr.algebra.lmandic.procvat.dao.entities.relations.*
+import kotlinx.coroutines.runBlocking
 
 private const val AUTHORITY = "hr.algebra.lmandic.procvat.api.provider"
 
@@ -110,7 +114,7 @@ val VRSTE_DOKUMENTA_PROVIDER_CONTENT_URI: Uri = Uri.parse("content://$AUTHORITY/
 
 class ProcvatProvider : ContentProvider() {
 
-    private lateinit var repo: ProcvatRepo
+    private lateinit var procvatDao: ProcvatDao
 
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<String>?): Int {
         when(URI_MATCHER.match(uri)){
@@ -229,184 +233,751 @@ class ProcvatProvider : ContentProvider() {
     }
 
     override fun insert(uri: Uri, values: ContentValues?): Uri {
-        val tableName: String
         val contentUri: Uri
+        val result: Int
 
         when(URI_MATCHER.match(uri)){
             ARTIKLI -> {
-                tableName = ProcvatSqlHelper.ARTIKL_TABLE_NAME
                 contentUri = ARTIKLI_PROVIDER_CONTENT_URI
+                runBlocking {
+                    result = procvatDao.insertArtikl(Artikl.fromContentValues(values!!))
+                }
             }
             BOJE -> {
-                tableName = ProcvatSqlHelper.BOJA_TABLE_NAME
                 contentUri = BOJE_PROVIDER_CONTENT_URI
+                runBlocking {
+                    result = procvatDao.insertBoja(Boja.fromContentValues(values!!))
+                }
             }
             DOKUMENTI -> {
-                tableName = ProcvatSqlHelper.DOKUMENT_TABLE_NAME
                 contentUri = DOKUMENTI_PROVIDER_CONTENT_URI
+                runBlocking {
+                    result = procvatDao.insertDokument(Dokument.fromContentValues(values!!))
+                }
             }
             GRUPE -> {
-                tableName = ProcvatSqlHelper.GRUPA_TABLE_NAME
                 contentUri = GRUPE_PROVIDER_CONTENT_URI
+                runBlocking {
+                    result = procvatDao.insertGrupa(Grupa.fromContentValues(values!!))
+                }
             }
             KORISNICI -> {
-                tableName = ProcvatSqlHelper.KORISNIK_TABLE_NAME
                 contentUri = KORISNICI_PROVIDER_CONTENT_URI
+                runBlocking {
+                    result = procvatDao.insertKorisnik(Korisnik.fromContentValues(values!!))
+                }
             }
             NARUDZBE -> {
-                tableName = ProcvatSqlHelper.NARUDZBA_TABLE_NAME
                 contentUri = NARUDZBE_PROVIDER_CONTENT_URI
+                runBlocking {
+                    result = procvatDao.insertNarudzba(Narudzba.fromContentValues(values!!))
+                }
             }
             PARTNERI -> {
-                tableName = ProcvatSqlHelper.PARTNER_TABLE_NAME
                 contentUri = PARTNERI_PROVIDER_CONTENT_URI
+                runBlocking {
+                    result = procvatDao.insertPartner(Partner.fromContentValues(values!!))
+                }
             }
             PRODAJE -> {
-                tableName = ProcvatSqlHelper.PRODAJA_TABLE_NAME
                 contentUri = PRODAJE_PROVIDER_CONTENT_URI
+                runBlocking {
+                    result = procvatDao.insertProdaja(Prodaja.fromContentValues(values!!))
+                }
             }
             SKLADISTA -> {
-                tableName = ProcvatSqlHelper.SKLADISTE_TABLE_NAME
                 contentUri = SKLADISTA_PROVIDER_CONTENT_URI
+                runBlocking {
+                    result = procvatDao.insertSkladiste(Skladiste.fromContentValues(values!!))
+                }
             }
             STANJA_SKLADISTA -> {
-                tableName = ProcvatSqlHelper.STANJE_SKLADISTA_TABLE_NAME
                 contentUri = STANJA_SKLADISTA_PROVIDER_CONTENT_URI
+                runBlocking {
+                    result = procvatDao.insertStanjeSkladista(StanjeSkladista.fromContentValues(values!!))
+                }
             }
             STATUSI -> {
-                tableName = ProcvatSqlHelper.STATUS_TABLE_NAME
                 contentUri = STATUSI_PROVIDER_CONTENT_URI
+                runBlocking {
+                    result = procvatDao.insertStatus(Status.fromContentValues(values!!))
+                }
             }
             UNOSI_STANJA_ARTIKLA -> {
-                tableName = ProcvatSqlHelper.UNOS_STANJA_ARTIKLA_TABLE_NAME
                 contentUri = UNOSI_STANJA_ARTIKALA_PROVIDER_CONTENT_URI
+                runBlocking {
+                    result = procvatDao.insertUnosStanjaArtikla(UnosStanjaArtikla.fromContentValues(values!!))
+                }
             }
             VRSTE_DOKUMENTA -> {
-                tableName = ProcvatSqlHelper.VRSTA_DOKUMENTA_TABLE_NAME
                 contentUri = VRSTE_DOKUMENTA_PROVIDER_CONTENT_URI
+                runBlocking {
+                    result = procvatDao.insertVrstaDokumenta(VrstaDokumenta.fromContentValues(values!!))
+                }
             }
             else -> throw IllegalArgumentException("Wrong uri!")
         }
 
-        val id = repo.insert(tableName, values)
-
-        return ContentUris.withAppendedId(contentUri, id)
+        return ContentUris.withAppendedId(contentUri, result.toLong())
     }
 
     override fun onCreate(): Boolean {
-        repo = getProcvatRepo(context)
+        procvatDao = ProcvatDatabase.getInstance(context!!)
         return true
     }
 
     override fun query(
         uri: Uri, projection: Array<String>?, selection: String?,
         selectionArgs: Array<String>?, sortOrder: String?
-    ): Cursor? {
-        val tableName: String
+    ): Cursor {
+        val cursor: MatrixCursor
+
         when(URI_MATCHER.match(uri)){
-            ARTIKLI -> tableName = ProcvatSqlHelper.ARTIKL_TABLE_NAME
-            BOJE -> tableName = ProcvatSqlHelper.BOJA_TABLE_NAME
-            DOKUMENTI -> tableName = ProcvatSqlHelper.DOKUMENT_TABLE_NAME
-            GRUPE -> tableName = ProcvatSqlHelper.GRUPA_TABLE_NAME
-            KORISNICI -> tableName = ProcvatSqlHelper.KORISNIK_TABLE_NAME
-            NARUDZBE -> tableName = ProcvatSqlHelper.NARUDZBA_TABLE_NAME
-            PARTNERI -> tableName = ProcvatSqlHelper.PARTNER_TABLE_NAME
-            PRODAJE -> tableName = ProcvatSqlHelper.PRODAJA_TABLE_NAME
-            SKLADISTA -> tableName = ProcvatSqlHelper.SKLADISTE_TABLE_NAME
-            STANJA_SKLADISTA -> tableName = ProcvatSqlHelper.STANJE_SKLADISTA_TABLE_NAME
-            STATUSI -> tableName = ProcvatSqlHelper.STATUS_TABLE_NAME
-            UNOSI_STANJA_ARTIKLA -> tableName = ProcvatSqlHelper.UNOS_STANJA_ARTIKLA_TABLE_NAME
-            VRSTE_DOKUMENTA -> tableName = ProcvatSqlHelper.VRSTA_DOKUMENTA_TABLE_NAME
+            ARTIKLI -> {
+                val artikls: List<ArtiklWithGrupaAndBojaAndStatus>
+                cursor = MatrixCursor(
+                    arrayOf(
+                        Artikl::_id.name,
+                        Artikl::naziv.name,
+                        Artikl::grupaId.name,
+                        "grupaNaziv",
+                        Artikl::jedinicnaKolicina.name,
+                        Artikl::kolicinaUPakiranju.name,
+                        Artikl::bojaId.name,
+                        "bojaHex",
+                        "bojaNaziv",
+                        Artikl::picturePath.name,
+                        Artikl::barkod.name,
+                        Artikl::statusId.name,
+                        "statusNaziv",
+                        "statusOpis"
+                    ))
+
+                runBlocking {
+                    artikls =
+                        if (selectionArgs.isNullOrEmpty())
+                            procvatDao.getArtikli()
+                        else
+                            arrayOf(procvatDao.getArtikl(selectionArgs.first().toInt())).toList()
+                }
+
+                for (artikl: ArtiklWithGrupaAndBojaAndStatus in artikls){
+                    cursor.newRow()
+                        .add(Artikl::_id.name, artikl.artikl._id)
+                        .add(Artikl::naziv.name, artikl.artikl.naziv)
+                        .add(Artikl::grupaId.name, artikl.artikl.grupaId)
+                        .add("grupaNaziv", artikl.grupa.naziv)
+                        .add(Artikl::jedinicnaKolicina.name, artikl.artikl.jedinicnaKolicina)
+                        .add(Artikl::kolicinaUPakiranju.name, artikl.artikl.kolicinaUPakiranju)
+                        .add(Artikl::bojaId.name, artikl.artikl.bojaId)
+                        .add("bojaHex", artikl.boja.bojaHex)
+                        .add("bojaNaziv", artikl.boja.naziv)
+                        .add(Artikl::picturePath.name, artikl.artikl.picturePath)
+                        .add(Artikl::barkod.name, artikl.artikl.barkod)
+                        .add(Artikl::statusId.name, artikl.artikl.statusId)
+                        .add("statusNaziv", artikl.status.naziv)
+                        .add("statusOpis", artikl.status.opis)
+                }
+
+                return cursor
+            }
+            BOJE -> {
+                val boje: List<Boja>
+                cursor = MatrixCursor(
+                    arrayOf(
+                        Boja::_id.name,
+                        Boja::bojaHex.name,
+                        Boja::naziv.name
+                    )
+                )
+
+                runBlocking {
+                    boje =
+                        if (selectionArgs.isNullOrEmpty())
+                            procvatDao.getBoje()
+                        else
+                            arrayOf(procvatDao.getBoja(selectionArgs.first().toInt())).toList()
+
+                }
+
+                for (boja: Boja in boje) {
+                    cursor.newRow()
+                        .add(Boja::_id.name, boja._id)
+                        .add(Boja::bojaHex.name, boja.bojaHex)
+                        .add(Boja::naziv.name, boja.naziv)
+                }
+
+                return cursor
+            }
+            DOKUMENTI -> {
+                val dokumenti: List<DokumentWithVrstaDokumentaAndSkladisteAndStatusAndPartnerAndKorisnik>
+                cursor = MatrixCursor(
+                    arrayOf(
+                        Dokument::_id.name,
+                        Dokument::vrstaDokumentaId.name,
+                        "vrstaDokumentaNaziv",
+                        "vrstaDokumentaIzlazni",
+                        Dokument::skladisteId.name,
+                        "skladisteNaziv",
+                        Dokument::datumKreiranja.name,
+                        Dokument::ukupnaKolicina.name,
+                        Dokument::napomena.name,
+                        Dokument::statusId.name,
+                        "statusNaziv",
+                        "statusOpis",
+                        Dokument::partnerId.name,
+                        "partnerNaziv",
+                        "partnerOib",
+                        "partnerAdresa",
+                        "partnerMjesto",
+                        "partnerPostanskiBroj",
+                        "partnerBrojMobitela",
+                        "partnerEmail",
+                        "partnerIban",
+                        Dokument::korisnikId.name,
+                        "korisnikIme",
+                        "korisnikLozinka"
+                    )
+                )
+
+                runBlocking {
+                    dokumenti =
+                        if (selectionArgs.isNullOrEmpty())
+                            procvatDao.getDokumenti()
+                        else
+                            arrayOf(procvatDao.getDokument(selectionArgs.first().toInt())).toList()
+                }
+
+                for (dokument: DokumentWithVrstaDokumentaAndSkladisteAndStatusAndPartnerAndKorisnik in dokumenti) {
+                    cursor.newRow()
+                        .add(Dokument::_id.name, dokument.dokument._id)
+                        .add(Dokument::vrstaDokumentaId.name, dokument.dokument.vrstaDokumentaId)
+                        .add("vrstaDokumentaNaziv", dokument.vrstaDokumenta.naziv)
+                        .add("vrstaDokumentaIzlazni", dokument.vrstaDokumenta.izlazni)
+                        .add(Dokument::skladisteId.name, dokument.dokument.skladisteId)
+                        .add("skladisteNaziv", dokument.skladiste.naziv)
+                        .add(Dokument::datumKreiranja.name, dokument.dokument.datumKreiranja)
+                        .add(Dokument::ukupnaKolicina.name, dokument.dokument.ukupnaKolicina)
+                        .add(Dokument::napomena.name, dokument.dokument.napomena)
+                        .add(Dokument::statusId.name, dokument.dokument.statusId)
+                        .add("statusNaziv", dokument.status.naziv)
+                        .add("statusOpis", dokument.status.opis)
+                        .add(Dokument::partnerId.name, dokument.dokument.partnerId)
+                        .add("partnerNaziv", dokument.partner.naziv)
+                        .add("partnerOib", dokument.partner.oib)
+                        .add("partnerAdresa", dokument.partner.adresa)
+                        .add("partnerMjesto", dokument.partner.mjesto)
+                        .add("partnerPostanskiBroj", dokument.partner.postanskiBroj)
+                        .add("partnerBrojMobitela", dokument.partner.brojMobitela)
+                        .add("partnerEmail", dokument.partner.email)
+                        .add("partnerIban", dokument.partner.iban)
+                        .add(Dokument::korisnikId.name, dokument.dokument.korisnikId)
+                        .add("korisnikIme", dokument.korisnik.korisnickoIme)
+                        .add("korisnikLozinka", dokument.korisnik.lozinka)
+                }
+
+                return cursor
+            }
+            GRUPE -> {
+                val grupe: List<Grupa>
+                cursor = MatrixCursor(
+                    arrayOf(
+                        Grupa::_id.name,
+                        Grupa::naziv.name,
+                    )
+                )
+
+                runBlocking {
+                    grupe =
+                        if (selectionArgs.isNullOrEmpty())
+                            procvatDao.getGrupe()
+                        else
+                            arrayOf(procvatDao.getGrupa(selectionArgs.first().toInt())).toList()
+
+                }
+
+                for (grupa: Grupa in grupe) {
+                    cursor.newRow()
+                        .add(Grupa::_id.name, grupa._id)
+                        .add(Grupa::naziv.name, grupa.naziv)
+                }
+
+                return cursor
+            }
+            KORISNICI -> {
+                val korisnici: List<Korisnik>
+                cursor = MatrixCursor(
+                    arrayOf(
+                        Grupa::_id.name,
+                        Grupa::naziv.name,
+                    )
+                )
+
+                runBlocking {
+                    korisnici =
+                        when {
+                            selectionArgs.isNullOrEmpty() -> {
+                                procvatDao.getKorisnici()
+                            }
+                            selectionArgs.first().toIntOrNull() == null -> {
+                                arrayOf(procvatDao.getKorisnikByUsername(selectionArgs.first())).toList()
+                            }
+                            else -> {
+                                arrayOf(procvatDao.getKorisnik(selectionArgs.first().toInt())).toList()
+                            }
+                        }
+
+                }
+
+                for (korisnik: Korisnik in korisnici) {
+                    cursor.newRow()
+                        .add(Korisnik::_id.name, korisnik._id)
+                        .add(Korisnik::korisnickoIme.name, korisnik.korisnickoIme)
+                        .add(Korisnik::lozinka.name, korisnik.lozinka)
+                }
+
+                return cursor
+            }
+            NARUDZBE -> {
+                val narudzbe: List<NarudzbaWithDokumentAndArtiklAndStatusAndKorisnik>
+                cursor = MatrixCursor(
+                    arrayOf(
+                        Narudzba::_id.name,
+                        Narudzba::dokumentId.name,                        
+                        Narudzba::artiklId.name,
+                        Artikl::naziv.name,
+                        Artikl::grupaId.name,
+                        Artikl::jedinicnaKolicina.name,
+                        Artikl::kolicinaUPakiranju.name,
+                        Artikl::bojaId.name,
+                        Artikl::picturePath.name,
+                        Artikl::barkod.name,
+                        "artiklStatusId",
+                        Narudzba::datumNarudzbe.name,
+                        Narudzba::kolicina.name,
+                        Narudzba::statusId.name,
+                        "statusNaziv",
+                        "statusOpis",
+                        Narudzba::korisnikId.name,
+                        "korisnikIme",
+                        "korisnikLozinka"
+                    )
+                )
+
+                runBlocking {
+                    narudzbe =
+                        if (selectionArgs.isNullOrEmpty())
+                            procvatDao.getNarudzbe()
+                        else
+                            arrayOf(procvatDao.getNarudzba(selectionArgs.first().toInt())).toList()
+
+                }
+
+                for (narudzba: NarudzbaWithDokumentAndArtiklAndStatusAndKorisnik in narudzbe) {
+                    cursor.newRow()
+                        .add(Narudzba::_id.name, narudzba.narudzba._id)
+                        .add(Narudzba::dokumentId.name, narudzba.narudzba.dokumentId)
+                        .add(Narudzba::artiklId.name, narudzba.narudzba.artiklId)
+                        .add(Artikl::naziv.name, narudzba.artikl.naziv)
+                        .add(Artikl::grupaId.name, narudzba.artikl.grupaId)                        
+                        .add(Artikl::jedinicnaKolicina.name, narudzba.artikl.jedinicnaKolicina)
+                        .add(Artikl::kolicinaUPakiranju.name, narudzba.artikl.kolicinaUPakiranju)
+                        .add(Artikl::bojaId.name, narudzba.artikl.bojaId)
+                        .add(Artikl::picturePath.name, narudzba.artikl.picturePath)
+                        .add(Artikl::barkod.name, narudzba.artikl.barkod)
+                        .add("artiklStatusId", narudzba.artikl.statusId)
+                        .add(Narudzba::datumNarudzbe.name, narudzba.narudzba.datumNarudzbe)
+                        .add(Narudzba::kolicina.name, narudzba.narudzba.kolicina)
+                        .add(Narudzba::statusId.name, narudzba.narudzba.statusId)
+                        .add("statusNaziv", narudzba.status.naziv)
+                        .add("statusOpis", narudzba.status.opis)
+                        .add(Narudzba::korisnikId.name, narudzba.narudzba.korisnikId)
+                        .add("korisnikIme", narudzba.korisnik.korisnickoIme)
+                        .add("korisnikLozinka", narudzba.korisnik.lozinka)
+                }
+
+                return cursor
+            }
+            PARTNERI -> {
+                val partneri: List<Partner>
+                cursor = MatrixCursor(
+                    arrayOf(
+                        Partner::_id.name,
+                        Partner::naziv.name,
+                        Partner::oib.name,
+                        Partner::adresa.name,
+                        Partner::mjesto.name,
+                        Partner::postanskiBroj.name,
+                        Partner::brojMobitela.name,
+                        Partner::email.name,
+                        Partner::iban.name                        
+                    )
+                )
+
+                runBlocking {
+                    partneri =
+                        if (selectionArgs.isNullOrEmpty())
+                            procvatDao.getPartneri()
+                        else
+                            arrayOf(procvatDao.getPartner(selectionArgs.first().toInt())).toList()
+
+                }
+
+                for (partner: Partner in partneri) {
+                    cursor.newRow()
+                        .add(Partner::_id.name, partner._id)
+                        .add(Partner::naziv.name, partner.naziv)
+                        .add(Partner::oib.name, partner.oib)
+                        .add(Partner::adresa.name, partner.adresa)
+                        .add(Partner::mjesto.name, partner.mjesto)
+                        .add(Partner::postanskiBroj.name, partner.postanskiBroj)
+                        .add(Partner::brojMobitela.name, partner.brojMobitela)
+                        .add(Partner::email.name, partner.email)
+                        .add(Partner::iban.name, partner.iban)
+                }
+
+                return cursor
+            }
+            PRODAJE -> {
+                val prodaje: List<ProdajaWithDokumentAndArtiklAndSkladisteAndStatusAndKorisnik>
+                cursor = MatrixCursor(
+                    arrayOf(
+                        Prodaja::_id.name,
+                        Prodaja::dokumentId.name,
+                        Prodaja::artiklId.name,
+                        Artikl::naziv.name,
+                        Artikl::grupaId.name,
+                        Artikl::jedinicnaKolicina.name,
+                        Artikl::kolicinaUPakiranju.name,
+                        Artikl::bojaId.name,
+                        Artikl::picturePath.name,
+                        Artikl::barkod.name,
+                        "artiklStatusId",
+                        Prodaja::skladisteId.name,
+                        "skladisteNaziv",
+                        Prodaja::kolicina.name,
+                        Prodaja::statusId.name,
+                        "statusNaziv",
+                        "statusOpis",
+                        Prodaja::korisnikId.name,
+                        "korisnikIme",
+                        "korisnikLozinka"
+                    )
+                )
+
+                runBlocking {
+                    prodaje =
+                        if (selectionArgs.isNullOrEmpty())
+                            procvatDao.getProdaje()
+                        else
+                            arrayOf(procvatDao.getProdaja(selectionArgs.first().toInt())).toList()
+
+                }
+
+                for (prodaja: ProdajaWithDokumentAndArtiklAndSkladisteAndStatusAndKorisnik in prodaje) {
+                    cursor.newRow()
+                        .add(Prodaja::_id.name, prodaja.prodaja._id)
+                        .add(Prodaja::dokumentId.name, prodaja.prodaja.dokumentId)
+                        .add(Prodaja::artiklId.name, prodaja.prodaja.artiklId)
+                        .add(Artikl::naziv.name, prodaja.artikl.naziv)
+                        .add(Artikl::grupaId.name, prodaja.artikl.grupaId)
+                        .add(Artikl::jedinicnaKolicina.name, prodaja.artikl.jedinicnaKolicina)
+                        .add(Artikl::kolicinaUPakiranju.name, prodaja.artikl.kolicinaUPakiranju)
+                        .add(Artikl::bojaId.name, prodaja.artikl.bojaId)
+                        .add(Artikl::picturePath.name, prodaja.artikl.picturePath)
+                        .add(Artikl::barkod.name, prodaja.artikl.barkod)
+                        .add("artiklStatusId", prodaja.artikl.statusId)
+                        .add(Prodaja::skladisteId.name, prodaja.prodaja.skladisteId)
+                        .add("skladisteNaziv", prodaja.skladiste.naziv)
+                        .add(Prodaja::kolicina.name, prodaja.prodaja.kolicina)
+                        .add("statusNaziv", prodaja.status.naziv)
+                        .add("statusOpis", prodaja.status.opis)
+                        .add(Prodaja::korisnikId.name, prodaja.prodaja.korisnikId)
+                        .add("korisnikIme", prodaja.korisnik.korisnickoIme)
+                        .add("korisnikLozinka", prodaja.korisnik.lozinka)
+                }
+
+                return cursor
+            }
+            SKLADISTA -> {
+                val skladista: List<Skladiste>
+                cursor = MatrixCursor(
+                    arrayOf(
+                        Skladiste::_id.name,
+                        Skladiste::naziv.name
+                    )
+                )
+
+                runBlocking {
+                    skladista =
+                        if (selectionArgs.isNullOrEmpty())
+                            procvatDao.getSkladista()
+                        else
+                            arrayOf(procvatDao.getSkladiste(selectionArgs.first().toInt())).toList()
+
+                }
+
+                for (skladiste: Skladiste in skladista) {
+                    cursor.newRow()
+                        .add(Skladiste::_id.name, skladiste._id)
+                        .add(Skladiste::naziv.name, skladiste.naziv)
+                }
+
+                return cursor
+            }
+            STANJA_SKLADISTA -> {
+                val stanjaSkladista: List<StanjeSkladistaWithArtiklAndSkladiste>
+                cursor = MatrixCursor(
+                    arrayOf(
+                        StanjeSkladista::_id.name,
+                        StanjeSkladista::artiklId.name,
+                        Artikl::naziv.name,
+                        Artikl::grupaId.name,
+                        Artikl::jedinicnaKolicina.name,
+                        Artikl::kolicinaUPakiranju.name,
+                        Artikl::bojaId.name,
+                        Artikl::picturePath.name,
+                        Artikl::barkod.name,
+                        "artiklStatusId",
+                        StanjeSkladista::skladisteId.name,
+                        "skladisteNaziv",
+                        StanjeSkladista::klasa.name,
+                        StanjeSkladista::kolicina.name
+                    )
+                )
+
+                runBlocking {
+                    stanjaSkladista =
+                        when {
+                            selectionArgs.isNullOrEmpty() -> {
+                                procvatDao.getStanjaSkladista()
+                            }
+                            selection == StanjeSkladista::skladisteId.name -> {
+                                procvatDao.getStanjaSkladistaBySkladisteId(selectionArgs.first().toInt())
+                            }
+                            selection == StanjeSkladista::artiklId.name -> {
+                                procvatDao.getStanjaSkladistaByArtiklId(selectionArgs.first().toInt())
+                            }
+                            else -> throw IllegalArgumentException("Wrong uri!")
+                        }
+                }
+
+                for (stanje: StanjeSkladistaWithArtiklAndSkladiste in stanjaSkladista) {
+                    cursor.newRow()
+                        .add(StanjeSkladista::_id.name, stanje.stanjeSkladista._id)
+                        .add(StanjeSkladista::artiklId.name, stanje.stanjeSkladista.artiklId)
+                        .add(Artikl::naziv.name, stanje.artikl.naziv)
+                        .add(Artikl::grupaId.name, stanje.artikl.grupaId)
+                        .add(Artikl::jedinicnaKolicina.name, stanje.artikl.jedinicnaKolicina)
+                        .add(Artikl::kolicinaUPakiranju.name, stanje.artikl.kolicinaUPakiranju)
+                        .add(Artikl::bojaId.name, stanje.artikl.bojaId)
+                        .add(Artikl::picturePath.name, stanje.artikl.picturePath)
+                        .add(Artikl::barkod.name, stanje.artikl.barkod)
+                        .add("artiklStatusId", stanje.artikl.statusId)
+                        .add(StanjeSkladista::skladisteId.name, stanje.stanjeSkladista.skladisteId)
+                        .add("skladisteNaziv", stanje.skladiste.naziv)
+                        .add(StanjeSkladista::klasa.name, stanje.stanjeSkladista.klasa)
+                        .add(StanjeSkladista::kolicina.name, stanje.stanjeSkladista.kolicina)
+                }
+
+                return cursor
+            }
+            STATUSI -> {
+                val statusi: List<Status>
+                cursor = MatrixCursor(
+                    arrayOf(
+                        Status::_id.name,
+                        Status::naziv.name,
+                        Status::opis.name
+                    )
+                )
+
+                runBlocking {
+                    statusi =
+                        if (selectionArgs.isNullOrEmpty())
+                            procvatDao.getStatusi()
+                        else
+                            arrayOf(procvatDao.getStatus(selectionArgs.first().toInt())).toList()
+                }
+
+                for (status: Status in statusi) {
+                    cursor.newRow()
+                        .add(Status::_id.name, status._id)
+                        .add(Status::naziv.name, status.naziv)
+                        .add(Status::opis.name, status.opis)
+                }
+
+                return cursor
+            }
+            UNOSI_STANJA_ARTIKLA -> {
+                val unosiStanja: List<UnosStanjaArtiklaWithArtiklAndSkladisteAndKorisnik>
+                cursor = MatrixCursor(
+                    arrayOf(
+                        UnosStanjaArtikla::_id.name,
+                        UnosStanjaArtikla::datumUnosa.name,
+                        UnosStanjaArtikla::artiklId.name,
+                        Artikl::naziv.name,
+                        Artikl::grupaId.name,
+                        Artikl::jedinicnaKolicina.name,
+                        Artikl::kolicinaUPakiranju.name,
+                        Artikl::bojaId.name,
+                        Artikl::picturePath.name,
+                        Artikl::barkod.name,
+                        "artiklStatusId",
+                        UnosStanjaArtikla::skladisteId.name,
+                        "skladisteNaziv",
+                        UnosStanjaArtikla::kolicina.name,
+                        UnosStanjaArtikla::korisnikId.name,
+                        "korisnikIme",
+                        "korisnikLozinka"
+                    )
+                )
+
+                runBlocking {
+                    unosiStanja =
+                        when {
+                            selectionArgs.isNullOrEmpty() -> {
+                                procvatDao.getUnosiStanjaArtikla()                                
+                            }
+                            selection == UnosStanjaArtikla::artiklId.name -> {
+                                procvatDao.getUnosiStanjaArtiklaByArtikl(selectionArgs.first().toInt())
+                            }
+                            selection == UnosStanjaArtikla::skladisteId.name -> {
+                                procvatDao.getUnosiStanjaArtiklaBySkladiste(selectionArgs.first().toInt())
+                            }
+                            else -> throw IllegalArgumentException("Wrong uri!")
+                        }
+                }
+
+                for (unos: UnosStanjaArtiklaWithArtiklAndSkladisteAndKorisnik in unosiStanja) {
+                    cursor.newRow()
+                        .add(UnosStanjaArtikla::_id.name, unos.unosStanjaArtikla._id)
+                        .add(UnosStanjaArtikla::datumUnosa.name, unos.unosStanjaArtikla.datumUnosa)
+                        .add(UnosStanjaArtikla::artiklId.name, unos.unosStanjaArtikla.artiklId)
+                        .add(Artikl::naziv.name, unos.artikl.naziv)
+                        .add(Artikl::grupaId.name, unos.artikl.grupaId)
+                        .add(Artikl::jedinicnaKolicina.name, unos.artikl.jedinicnaKolicina)
+                        .add(Artikl::kolicinaUPakiranju.name, unos.artikl.kolicinaUPakiranju)
+                        .add(Artikl::bojaId.name, unos.artikl.bojaId)
+                        .add(Artikl::picturePath.name, unos.artikl.picturePath)
+                        .add(Artikl::barkod.name, unos.artikl.barkod)
+                        .add("artiklStatusId", unos.artikl.statusId)
+                        .add(UnosStanjaArtikla::skladisteId.name, unos.unosStanjaArtikla.skladisteId)
+                        .add("skladisteNaziv", unos.skladiste.naziv)
+                        .add(UnosStanjaArtikla::kolicina.name, unos.unosStanjaArtikla.kolicina)
+                        .add(UnosStanjaArtikla::korisnikId.name, unos.unosStanjaArtikla.korisnikId)
+                        .add("korisnikIme", unos.korisnik.korisnickoIme)
+                        .add("korisnikLozinka", unos.korisnik.lozinka)
+                    
+                }
+
+                return cursor
+            }
+            VRSTE_DOKUMENTA -> {
+                val vrste: List<VrstaDokumenta>
+                cursor = MatrixCursor(
+                    arrayOf(
+                        VrstaDokumenta::_id.name,
+                        VrstaDokumenta::naziv.name,
+                        VrstaDokumenta::izlazni.name
+                    )
+                )
+
+                runBlocking {
+                    vrste =
+                        if (selectionArgs.isNullOrEmpty())
+                            procvatDao.getVrsteDokumenta()
+                        else
+                            arrayOf(procvatDao.getVrstaDokumenta(selectionArgs.first().toInt())).toList()
+                }
+
+                for (vrsta: VrstaDokumenta in vrste) {
+                    cursor.newRow()
+                        .add(VrstaDokumenta::_id.name, vrsta._id)
+                        .add(VrstaDokumenta::naziv.name, vrsta.naziv)
+                        .add(VrstaDokumenta::izlazni.name, vrsta.izlazni)
+                }
+
+                return cursor
+            }
             else -> throw IllegalArgumentException("Wrong uri!")
         }
 
-        return repo.query(tableName, projection, selection, selectionArgs, sortOrder)
     }
 
     override fun update(
         uri: Uri, values: ContentValues?, selection: String?,
         selectionArgs: Array<String>?
     ): Int {
+        val result: Int
         when(URI_MATCHER.match(uri)){
-            ARTIKLI -> return repo.update(ProcvatSqlHelper.ARTIKL_TABLE_NAME, values, selection, selectionArgs)
             ARTIKLI_ID -> {
-                val id = uri.lastPathSegment
-                if (id != null)
-                    return repo.update(ProcvatSqlHelper.ARTIKL_TABLE_NAME, values, "${Artikl::_id.name}=?", arrayOf(id))
+                runBlocking {
+                    result = procvatDao.updateArtikl(Artikl.fromContentValues(values!!))
+                }
             }
-            BOJE -> return repo.update(ProcvatSqlHelper.BOJA_TABLE_NAME, values, selection, selectionArgs)
             BOJE_ID -> {
-                val id = uri.lastPathSegment
-                if (id != null)
-                    return repo.update(ProcvatSqlHelper.BOJA_TABLE_NAME, values, "${Boja::_id.name}=?", arrayOf(id))
+                runBlocking {
+                    result = procvatDao.updateBoja(Boja.fromContentValues(values!!))
+                }
             }
-            DOKUMENTI -> return repo.update(ProcvatSqlHelper.DOKUMENT_TABLE_NAME, values, selection, selectionArgs)
             DOKUMENTI_ID -> {
-                val id = uri.lastPathSegment
-                if (id != null)
-                    return repo.update(ProcvatSqlHelper.DOKUMENT_TABLE_NAME, values, "${Dokument::_id.name}=?", arrayOf(id))
+                runBlocking {
+                    result = procvatDao.updateDokument(Dokument.fromContentValues(values!!))
+                }
             }
-            GRUPE -> return repo.update(ProcvatSqlHelper.GRUPA_TABLE_NAME, values, selection, selectionArgs)
             GRUPE_ID -> {
-                val id = uri.lastPathSegment
-                if (id != null)
-                    return repo.update(ProcvatSqlHelper.GRUPA_TABLE_NAME, values, "${Grupa::_id.name}=?", arrayOf(id))
+                runBlocking {
+                    result = procvatDao.updateGrupa(Grupa.fromContentValues(values!!))
+                }
             }
-            KORISNICI -> return repo.update(ProcvatSqlHelper.KORISNIK_TABLE_NAME, values, selection, selectionArgs)
             KORISNICI_ID -> {
-                val id = uri.lastPathSegment
-                if (id != null)
-                    return repo.update(ProcvatSqlHelper.KORISNIK_TABLE_NAME, values, "${Korisnik::_id.name}=?", arrayOf(id))
+                runBlocking {
+                    result = procvatDao.updateKorisnik(Korisnik.fromContentValues(values!!))
+                }
             }
-            NARUDZBE -> return repo.update(ProcvatSqlHelper.NARUDZBA_TABLE_NAME, values, selection, selectionArgs)
             NARUDZBE_ID -> {
-                val id = uri.lastPathSegment
-                if (id != null)
-                    return repo.update(ProcvatSqlHelper.NARUDZBA_TABLE_NAME, values, "${Narudzba::_id.name}=?", arrayOf(id))
+                runBlocking {
+                    result = procvatDao.updateNarudzba(Narudzba.fromContentValues(values!!))
+                }
             }
-            PARTNERI -> return repo.update(ProcvatSqlHelper.PARTNER_TABLE_NAME, values, selection, selectionArgs)
             PARTNERI_ID -> {
-                val id = uri.lastPathSegment
-                if (id != null)
-                    return repo.update(ProcvatSqlHelper.PARTNER_TABLE_NAME, values, "${Partner::_id.name}=?", arrayOf(id))
+                runBlocking {
+                    result = procvatDao.updatePartner(Partner.fromContentValues(values!!))
+                }
             }
-            PRODAJE -> return repo.update(ProcvatSqlHelper.PRODAJA_TABLE_NAME, values, selection, selectionArgs)
             PRODAJE_ID -> {
-                val id = uri.lastPathSegment
-                if (id != null)
-                    return repo.update(ProcvatSqlHelper.PRODAJA_TABLE_NAME, values, "${Prodaja::_id.name}=?", arrayOf(id))
+                runBlocking {
+                    result = procvatDao.updateProdaja(Prodaja.fromContentValues(values!!))
+                }
             }
-            SKLADISTA -> return repo.update(ProcvatSqlHelper.SKLADISTE_TABLE_NAME, values, selection, selectionArgs)
             SKLADISTA_ID -> {
-                val id = uri.lastPathSegment
-                if (id != null)
-                    return repo.update(ProcvatSqlHelper.SKLADISTE_TABLE_NAME, values, "${Skladiste::_id.name}=?", arrayOf(id))
+                runBlocking {
+                    result = procvatDao.updateSkladiste(Skladiste.fromContentValues(values!!))
+                }
             }
-            STANJA_SKLADISTA -> return repo.update(ProcvatSqlHelper.STANJE_SKLADISTA_TABLE_NAME, values, selection, selectionArgs)
             STANJA_SKLADISTA_ID -> {
-                val id = uri.lastPathSegment
-                if (id != null)
-                    return repo.update(ProcvatSqlHelper.STANJE_SKLADISTA_TABLE_NAME, values, "${StanjeSkladista::_id.name}=?", arrayOf(id))
+                runBlocking {
+                    result = procvatDao.updateStanjeSkladista(StanjeSkladista.fromContentValues(values!!))
+                }
             }
-            STATUSI -> return repo.update(ProcvatSqlHelper.STATUS_TABLE_NAME, values, selection, selectionArgs)
             STATUSI_ID -> {
-                val id = uri.lastPathSegment
-                if (id != null)
-                    return repo.update(ProcvatSqlHelper.STATUS_TABLE_NAME, values, "${Status::_id.name}=?", arrayOf(id))
+                runBlocking {
+                    result = procvatDao.updateStatus(Status.fromContentValues(values!!))
+                }
             }
-            UNOSI_STANJA_ARTIKLA -> return repo.update(ProcvatSqlHelper.UNOS_STANJA_ARTIKLA_TABLE_NAME, values, selection, selectionArgs)
             UNOSI_STANJA_ARTIKLA_ID -> {
-                val id = uri.lastPathSegment
-                if (id != null)
-                    return repo.update(ProcvatSqlHelper.UNOS_STANJA_ARTIKLA_TABLE_NAME, values, "${UnosStanjaArtikla::_id.name}=?", arrayOf(id))
+                runBlocking {
+                    result = procvatDao.updateUnosStanjaArtikla(UnosStanjaArtikla.fromContentValues(values!!))
+                }
             }
-            VRSTE_DOKUMENTA -> return repo.update(ProcvatSqlHelper.VRSTA_DOKUMENTA_TABLE_NAME, values, selection, selectionArgs)
             VRSTE_DOKUMENTA_ID -> {
-                val id = uri.lastPathSegment
-                if (id != null)
-                    return repo.update(ProcvatSqlHelper.VRSTA_DOKUMENTA_TABLE_NAME, values, "${VrstaDokumenta::_id.name}=?", arrayOf(id))
+                runBlocking {
+                    result = procvatDao.updateVrstaDokumenta(VrstaDokumenta.fromContentValues(values!!))
+                }
             }
+            else -> throw IllegalArgumentException("Wrong URI!")
         }
-        throw IllegalArgumentException("Wrong URI!")
+        return result
     }
 }

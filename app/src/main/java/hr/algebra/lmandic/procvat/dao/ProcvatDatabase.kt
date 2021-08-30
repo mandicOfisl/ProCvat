@@ -24,7 +24,7 @@ import hr.algebra.lmandic.procvat.dao.entities.*
     ],
     version = 1
 )
-abstract class ProcvatDatabase : RoomDatabase() {
+abstract class ProcvatDatabase : RoomDatabase(), ProcvatDao {
 
     abstract val procvatDao: ProcvatDao
 
