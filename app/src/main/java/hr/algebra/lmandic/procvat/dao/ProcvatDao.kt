@@ -22,6 +22,12 @@ interface ProcvatDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateArtikl(artikl: Artikl): Int
 
+    @Query("DELETE FROM Artikl")
+    suspend fun deleteArtikli(): Int
+
+    @Query("DELETE FROM Artikl WHERE _id = :artiklId")
+    suspend fun deleteArtikl(artiklId: Int): Int
+
 
     //Boja
     @Update(onConflict = OnConflictStrategy.REPLACE)
@@ -36,7 +42,13 @@ interface ProcvatDao {
     @Query("SELECT * FROM Boja WHERE _id = :id")
     suspend fun getBoja(id: Int): Boja
 
+    @Query("DELETE FROM Boja")
+    suspend fun deleteBoje(): Int
 
+    @Query("DELETE FROM Boja WHERE _id = :bojaId")
+    suspend fun deleteBoja(bojaId: Int): Int
+
+    
     //Dokument
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateDokument(dokument: Dokument): Int
@@ -50,7 +62,13 @@ interface ProcvatDao {
     @Query("SELECT * FROM Dokument WHERE _id = :id")
     suspend fun getDokument(id: Int): DokumentWithVrstaDokumentaAndSkladisteAndStatusAndPartnerAndKorisnik
 
+    @Query("DELETE FROM Dokument")
+    suspend fun deleteDokumenti(): Int
 
+    @Query("DELETE FROM Dokument WHERE _id = :dokumentId")
+    suspend fun deleteDokument(dokumentId: Int): Int
+
+    
     //Grupa
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateGrupa(grupa: Grupa): Int
@@ -63,6 +81,12 @@ interface ProcvatDao {
 
     @Query("SELECT * FROM Grupa WHERE _id = :id")
     suspend fun getGrupa(id: Int): Grupa
+
+    @Query("DELETE FROM Grupa")
+    suspend fun deleteGrupe(): Int
+
+    @Query("DELETE FROM Grupa WHERE _id = :grupaId")
+    suspend fun deleteGrupa(grupaId: Int): Int
 
 
     //Korisnik
@@ -81,6 +105,12 @@ interface ProcvatDao {
     @Query("SELECT * FROM Korisnik WHERE korisnickoIme = :name")
     suspend fun  getKorisnikByUsername(name: String): Korisnik
 
+    @Query("DELETE FROM Korisnik")
+    suspend fun deleteKorisnici(): Int
+
+    @Query("DELETE FROM Korisnik WHERE _id = :korisnikId")
+    suspend fun deleteKorisnik(korisnikId: Int): Int
+
 
     //Narudzba
     @Update(onConflict = OnConflictStrategy.REPLACE)
@@ -95,7 +125,13 @@ interface ProcvatDao {
     @Query("SELECT * FROM Narudzba WHERE _id = :id")
     suspend fun getNarudzba(id: Int): NarudzbaWithDokumentAndArtiklAndStatusAndKorisnik
 
+    @Query("DELETE FROM Narudzba")
+    suspend fun deleteNarudzbe(): Int
 
+    @Query("DELETE FROM Narudzba WHERE _id = :narudzbaId")
+    suspend fun deleteNarudzba(narudzbaId: Int): Int
+
+    
     //Partner
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updatePartner(partner: Partner): Int
@@ -109,7 +145,13 @@ interface ProcvatDao {
     @Query("SELECT * FROM Partner WHERE _id = :id")
     suspend fun getPartner(id: Int): Partner
 
+    @Query("DELETE FROM Partner")
+    suspend fun deletePartneri(): Int
 
+    @Query("DELETE FROM Partner WHERE _id = :partnerId")
+    suspend fun deletePartner(partnerId: Int): Int
+
+    
     //Prodaja
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateProdaja(prodaja: Prodaja): Int
@@ -123,6 +165,12 @@ interface ProcvatDao {
     @Query("SELECT * FROM Prodaja WHERE _id = :id")
     suspend fun getProdaja(id: Int): ProdajaWithDokumentAndArtiklAndSkladisteAndStatusAndKorisnik
 
+    @Query("DELETE FROM Prodaja")
+    suspend fun deleteProdaje(): Int
+
+    @Query("DELETE FROM Prodaja WHERE _id = :prodajaId")
+    suspend fun deleteProdaja(prodajaId: Int): Int
+    
 
     //Skladiste
     @Update(onConflict = OnConflictStrategy.REPLACE)
@@ -136,6 +184,12 @@ interface ProcvatDao {
 
     @Query("SELECT * FROM Skladiste WHERE _id = :id")
     suspend fun getSkladiste(id: Int): Skladiste
+
+    @Query("DELETE FROM Skladiste")
+    suspend fun deleteSkladista(): Int
+
+    @Query("DELETE FROM Skladiste WHERE _id = :skladisteId")
+    suspend fun deleteSkladiste(skladisteId: Int): Int
 
 
     //StanjeSkladista
@@ -154,7 +208,13 @@ interface ProcvatDao {
     @Query("SELECT * FROM StanjeSkladista WHERE artiklId = :id")
     suspend fun getStanjaSkladistaByArtiklId(id: Int): List<StanjeSkladistaWithArtiklAndSkladiste>
 
+    @Query("DELETE FROM StanjeSkladista")
+    suspend fun deleteStanjaSkladista(): Int
 
+    @Query("DELETE FROM StanjeSkladista WHERE _id = :stanjeSkladistaId")
+    suspend fun deleteStanjeSkladista(stanjeSkladistaId: Int): Int
+
+    
     //Status
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateStatus(status: Status): Int
@@ -168,6 +228,12 @@ interface ProcvatDao {
     @Query("SELECT * FROM Status WHERE _id = :id")
     suspend fun getStatus(id: Int): Status
 
+    @Query("DELETE FROM Status")
+    suspend fun deleteStatusi(): Int
+
+    @Query("DELETE FROM Status WHERE _id = :statusId")
+    suspend fun deleteStatus(statusId: Int): Int
+    
 
     //UnosStanjaArtikla
     @Update(onConflict = OnConflictStrategy.REPLACE)
@@ -185,6 +251,12 @@ interface ProcvatDao {
     @Query("SELECT * FROM UnosStanjaArtikla WHERE skladisteId = :skladisteId")
     suspend fun getUnosiStanjaArtiklaBySkladiste(skladisteId: Int): List<UnosStanjaArtiklaWithArtiklAndSkladisteAndKorisnik>
 
+    @Query("DELETE FROM UnosStanjaArtikla")
+    suspend fun deleteUnosiStanjaArtikla(): Int
+
+    @Query("DELETE FROM UnosStanjaArtikla WHERE _id = :unosStanjaArtiklaId")
+    suspend fun deleteUnosStanjaArtikla(unosStanjaArtiklaId: Int): Int
+    
 
     //VrstaDokumenta
     @Update(onConflict = OnConflictStrategy.REPLACE)
@@ -198,4 +270,12 @@ interface ProcvatDao {
 
     @Query("SELECT * FROM VrstaDokumenta WHERE _id = :id")
     suspend fun getVrstaDokumenta(id: Int): VrstaDokumenta
+
+    @Query("DELETE FROM VrstaDokumenta")
+    suspend fun deleteVrsteDokumenta(): Int
+
+    @Query("DELETE FROM VrstaDokumenta WHERE _id = :vrstaDokumentaId")
+    suspend fun deleteVrstaDokumenta(vrstaDokumentaId: Int): Int
+    
+    
 }

@@ -6,8 +6,6 @@ import android.database.MatrixCursor
 import android.net.Uri
 import hr.algebra.lmandic.procvat.dao.ProcvatDao
 import hr.algebra.lmandic.procvat.dao.ProcvatDatabase
-import hr.algebra.lmandic.procvat.dao.ProcvatRepo
-import hr.algebra.lmandic.procvat.dao.ProcvatSqlHelper
 import hr.algebra.lmandic.procvat.dao.entities.*
 import hr.algebra.lmandic.procvat.dao.entities.relations.*
 import kotlinx.coroutines.runBlocking
@@ -117,84 +115,164 @@ class ProcvatProvider : ContentProvider() {
     private lateinit var procvatDao: ProcvatDao
 
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<String>?): Int {
+        var result: Int
+        
         when(URI_MATCHER.match(uri)){
-            ARTIKLI -> return repo.delete(ProcvatSqlHelper.ARTIKL_TABLE_NAME, selection, selectionArgs)
+            ARTIKLI -> {
+                runBlocking { 
+                    result =  procvatDao.deleteArtikli()                    
+                }
+            }
             ARTIKLI_ID -> {
                 val id = uri.lastPathSegment
                 if (id != null)
-                    return repo.delete(ProcvatSqlHelper.ARTIKL_TABLE_NAME, "${Artikl::_id.name}=?", arrayOf(id))
+                    runBlocking {
+                        result =  procvatDao.deleteArtikl(id.toInt())
+                    }
             }
-            BOJE -> return repo.delete(ProcvatSqlHelper.BOJA_TABLE_NAME, selection, selectionArgs)
+            BOJE -> {
+                runBlocking {
+                    result =  procvatDao.deleteBoje()
+                }
+            }
             BOJE_ID -> {
                 val id = uri.lastPathSegment
                 if (id != null)
-                    return repo.delete(ProcvatSqlHelper.BOJA_TABLE_NAME, "${Boja::_id.name}=?", arrayOf(id))
+                    runBlocking {
+                        result =  procvatDao.deleteBoja(id.toInt())
+                    }
             }
-            DOKUMENTI -> return repo.delete(ProcvatSqlHelper.DOKUMENT_TABLE_NAME, selection, selectionArgs)
+            DOKUMENTI -> {
+                runBlocking {
+                    result =  procvatDao.deleteDokumenti()
+                }
+            }
             DOKUMENTI_ID -> {
                 val id = uri.lastPathSegment
                 if (id != null)
-                    return repo.delete(ProcvatSqlHelper.DOKUMENT_TABLE_NAME, "${Dokument::_id.name}=?", arrayOf(id))
+                    runBlocking {
+                        result =  procvatDao.deleteDokument(id.toInt())
+                    }
             }
-            GRUPE -> return repo.delete(ProcvatSqlHelper.GRUPA_TABLE_NAME, selection, selectionArgs)
+            GRUPE -> {
+                runBlocking {
+                    result =  procvatDao.deleteGrupe()
+                }
+            }
             GRUPE_ID -> {
                 val id = uri.lastPathSegment
                 if (id != null)
-                    return repo.delete(ProcvatSqlHelper.GRUPA_TABLE_NAME, "${Grupa::_id.name}=?", arrayOf(id))
+                    runBlocking {
+                        result =  procvatDao.deleteGrupa(id.toInt())
+                    }
             }
-            KORISNICI -> return repo.delete(ProcvatSqlHelper.KORISNIK_TABLE_NAME, selection, selectionArgs)
+            KORISNICI -> {
+                runBlocking {
+                    result =  procvatDao.deleteKorisnici()
+                }
+            }
             KORISNICI_ID -> {
                 val id = uri.lastPathSegment
                 if (id != null)
-                    return repo.delete(ProcvatSqlHelper.KORISNIK_TABLE_NAME, "${Korisnik::_id.name}=?", arrayOf(id))
+                    runBlocking {
+                        result =  procvatDao.deleteKorisnik(id.toInt())
+                    }
             }
-            NARUDZBE -> return repo.delete(ProcvatSqlHelper.NARUDZBA_TABLE_NAME, selection, selectionArgs)
+            NARUDZBE -> {
+                runBlocking {
+                    result =  procvatDao.deleteNarudzbe()
+                }
+            }
             NARUDZBE_ID -> {
                 val id = uri.lastPathSegment
                 if (id != null)
-                    return repo.delete(ProcvatSqlHelper.NARUDZBA_TABLE_NAME, "${Narudzba::_id.name}=?", arrayOf(id))
+                    runBlocking {
+                        result =  procvatDao.deleteNarudzba(id.toInt())
+                    }
             }
-            PARTNERI -> return repo.delete(ProcvatSqlHelper.PARTNER_TABLE_NAME, selection, selectionArgs)
+            PARTNERI -> {
+                runBlocking {
+                    result =  procvatDao.deletePartneri()
+                }
+            }
             PARTNERI_ID -> {
                 val id = uri.lastPathSegment
                 if (id != null)
-                    return repo.delete(ProcvatSqlHelper.PARTNER_TABLE_NAME, "${Partner::_id.name}=?", arrayOf(id))
+                    runBlocking {
+                        result =  procvatDao.deletePartner(id.toInt())
+                    }
             }
-            PRODAJE -> return repo.delete(ProcvatSqlHelper.PRODAJA_TABLE_NAME, selection, selectionArgs)
+            PRODAJE -> {
+                runBlocking {
+                    result =  procvatDao.deleteProdaje()
+                }
+            }
             PRODAJE_ID -> {
                 val id = uri.lastPathSegment
                 if (id != null)
-                    return repo.delete(ProcvatSqlHelper.PRODAJA_TABLE_NAME, "${Prodaja::_id.name}=?", arrayOf(id))
+                    runBlocking {
+                        result =  procvatDao.deleteProdaja(id.toInt())
+                    }
             }
-            SKLADISTA -> return repo.delete(ProcvatSqlHelper.SKLADISTE_TABLE_NAME, selection, selectionArgs)
+            SKLADISTA -> {
+                runBlocking {
+                    result =  procvatDao.deleteSkladista()
+                }
+            }
             SKLADISTA_ID -> {
                 val id = uri.lastPathSegment
                 if (id != null)
-                    return repo.delete(ProcvatSqlHelper.SKLADISTE_TABLE_NAME, "${Skladiste::_id.name}=?", arrayOf(id))
+                    runBlocking {
+                        result =  procvatDao.deleteSkladiste(id.toInt())
+                    }
             }
-            STANJA_SKLADISTA -> return repo.delete(ProcvatSqlHelper.STANJE_SKLADISTA_TABLE_NAME, selection, selectionArgs)
+            STANJA_SKLADISTA -> {
+                runBlocking {
+                    result =  procvatDao.deleteStanjaSkladista()
+                }
+            }
             STANJA_SKLADISTA_ID -> {
                 val id = uri.lastPathSegment
                 if (id != null)
-                    return repo.delete(ProcvatSqlHelper.STANJE_SKLADISTA_TABLE_NAME, "${StanjeSkladista::_id.name}=?", arrayOf(id))
+                    runBlocking {
+                        result =  procvatDao.deleteStanjeSkladista(id.toInt())
+                    }
             }
-            STATUSI -> return repo.delete(ProcvatSqlHelper.STATUS_TABLE_NAME, selection, selectionArgs)
+            STATUSI -> {
+                runBlocking {
+                    result =  procvatDao.deleteStatusi()
+                }
+            }
             STATUSI_ID -> {
                 val id = uri.lastPathSegment
                 if (id != null)
-                    return repo.delete(ProcvatSqlHelper.STATUS_TABLE_NAME, "${Status::_id.name}=?", arrayOf(id))
+                    runBlocking {
+                        result =  procvatDao.deleteStatus(id.toInt())
+                    }
             }
-            UNOSI_STANJA_ARTIKLA -> return repo.delete(ProcvatSqlHelper.UNOS_STANJA_ARTIKLA_TABLE_NAME, selection, selectionArgs)
+            UNOSI_STANJA_ARTIKLA -> {
+                runBlocking {
+                    result =  procvatDao.deleteUnosiStanjaArtikla()
+                }
+            }
             UNOSI_STANJA_ARTIKLA_ID -> {
                 val id = uri.lastPathSegment
                 if (id != null)
-                    return repo.delete(ProcvatSqlHelper.UNOS_STANJA_ARTIKLA_TABLE_NAME, "${UnosStanjaArtikla::_id.name}=?", arrayOf(id))
+                    runBlocking {
+                        result =  procvatDao.deleteUnosStanjaArtikla(id.toInt())
+                    }
             }
-            VRSTE_DOKUMENTA -> return repo.delete(ProcvatSqlHelper.VRSTA_DOKUMENTA_TABLE_NAME, selection, selectionArgs)
+            VRSTE_DOKUMENTA -> {
+                runBlocking {
+                    result =  procvatDao.deleteVrsteDokumenta()
+                }
+            }
             VRSTE_DOKUMENTA_ID -> {
                 val id = uri.lastPathSegment
                 if (id != null)
-                    return repo.delete(ProcvatSqlHelper.VRSTA_DOKUMENTA_TABLE_NAME, "${VrstaDokumenta::_id.name}=?", arrayOf(id))
+                    runBlocking {
+                        result =  procvatDao.deleteVrstaDokumenta(id.toInt())
+                    }
             }
         }
         throw IllegalArgumentException("Wrong URI!")
@@ -508,8 +586,9 @@ class ProcvatProvider : ContentProvider() {
                 val korisnici: List<Korisnik>
                 cursor = MatrixCursor(
                     arrayOf(
-                        Grupa::_id.name,
-                        Grupa::naziv.name,
+                        Korisnik::_id.name,
+                        Korisnik::korisnickoIme.name,
+                        Korisnik::lozinka.name
                     )
                 )
 
