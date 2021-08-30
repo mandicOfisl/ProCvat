@@ -8,19 +8,15 @@ import android.text.TextWatcher
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import hr.algebra.lmandic.procvat.dao.ProcvatDatabase
 import hr.algebra.lmandic.procvat.dao.entities.Korisnik
 import hr.algebra.lmandic.procvat.databinding.ActivityLoginBinding
 import hr.algebra.lmandic.procvat.framework.sendBroadcast
 import hr.algebra.lmandic.procvat.framework.startActivity
-import kotlinx.coroutines.launch
 
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
-    val dao = ProcvatDatabase.getInstance(this).procvatDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,23 +55,17 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun redirect() {
-        Handler(Looper.getMainLooper()).post { startActivity<MenuActivity>() }
+        //Handler(Looper.getMainLooper()).post { startActivity<MenuActivity>() }
     }
 
     private fun authenticateUser() : Boolean {
         val inputUsername = binding.etUsername.text.toString()
         val inputPass = binding.etPassword.text.toString()
 
-        var korisnik: Korisnik
-
-        lifecycleScope.launch{
-            korisnik = dao.getKorisnikByUsername(inputUsername)
-        }
-
         val korisnikCursor = contentResolver.query(
             KORISNICI_PROVIDER_CONTENT_URI,
             null,
-            "${Korisnik::korisnickoIme} LIKE ?",
+            null,
             arrayOf(inputUsername),
             null,
         )

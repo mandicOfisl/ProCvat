@@ -8,7 +8,7 @@ data class DokumentWithVrstaDokumentaAndSkladisteAndStatusAndPartnerAndKorisnik 
     @Embedded val dokument: Dokument,
     @Relation(
         entity = VrstaDokumenta::class,
-        parentColumn = "grupaId",
+        parentColumn = "vrstaDokumentaId",
         entityColumn =  "_id"
     )
     val vrstaDokumenta: VrstaDokumenta,

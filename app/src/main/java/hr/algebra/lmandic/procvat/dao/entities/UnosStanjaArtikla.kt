@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class UnosStanjaArtikla(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     var _id: Int?,
     var datumUnosa: String,
     var artiklId: Int,

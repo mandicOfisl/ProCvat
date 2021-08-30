@@ -22,7 +22,7 @@ import hr.algebra.lmandic.procvat.dao.entities.StanjeSkladista
 fun View.applyAnimation(resourceId: Int)
     = startAnimation(AnimationUtils.loadAnimation(context, resourceId))
 
-inline fun<reified T: Activity> Context.startActivity() = startActivity(Intent(this, T::class.java))
+inline fun<reified T: Activity> Context.startActivity() = startActivity(Intent(this, T::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
 
 inline fun<reified T: Activity> Context.startActivity(key: String, value: Int)
         = startActivity(Intent(this, T::class.java).apply { putExtra(key, value) })
@@ -132,7 +132,7 @@ fun Context.fetchNarudzbe() : MutableList<Narudzba>{
                     narudzbaCursor.getInt(narudzbaCursor.getColumnIndex(Narudzba::dokumentId.name)),
                     narudzbaCursor.getInt(narudzbaCursor.getColumnIndex(Narudzba::artiklId.name)),
                     narudzbaCursor.getString(narudzbaCursor.getColumnIndex(Narudzba::datumNarudzbe.name)),
-                    narudzbaCursor.getIntOrNull(narudzbaCursor.getColumnIndex(Narudzba::kolicina.name)),
+                    narudzbaCursor.getInt(narudzbaCursor.getColumnIndex(Narudzba::kolicina.name)),
                     narudzbaCursor.getInt(narudzbaCursor.getColumnIndex(Narudzba::statusId.name)),
                     narudzbaCursor.getInt(narudzbaCursor.getColumnIndex(Narudzba::korisnikId.name))
                 )

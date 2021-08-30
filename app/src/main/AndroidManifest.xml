@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="hr.algebra.lmandic.procvat">
 
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -41,7 +43,7 @@
             android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@style/SplashScreenTheme"
-            android:exported="false">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

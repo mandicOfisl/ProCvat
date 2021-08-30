@@ -9,7 +9,7 @@ interface ProcvatDao {
 
     //Artikl
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertArtikl(artikl: Artikl): Int
+    suspend fun insertArtikl(artikl: Artikl): Long
 
     @Transaction
     @Query("SELECT * FROM Artikl")
@@ -34,7 +34,7 @@ interface ProcvatDao {
     suspend fun updateBoja(boja: Boja): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertBoja(boja: Boja): Int
+    suspend fun insertBoja(boja: Boja): Long
 
     @Query("SELECT * FROM Boja")
     suspend fun getBoje(): List<Boja>
@@ -54,11 +54,13 @@ interface ProcvatDao {
     suspend fun updateDokument(dokument: Dokument): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertDokument(dokument: Dokument): Int
+    suspend fun insertDokument(dokument: Dokument): Long
 
+    @Transaction
     @Query("SELECT * FROM Dokument")
     suspend fun getDokumenti(): List<DokumentWithVrstaDokumentaAndSkladisteAndStatusAndPartnerAndKorisnik>
 
+    @Transaction
     @Query("SELECT * FROM Dokument WHERE _id = :id")
     suspend fun getDokument(id: Int): DokumentWithVrstaDokumentaAndSkladisteAndStatusAndPartnerAndKorisnik
 
@@ -74,7 +76,7 @@ interface ProcvatDao {
     suspend fun updateGrupa(grupa: Grupa): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertGrupa(grupa: Grupa): Int
+    suspend fun insertGrupa(grupa: Grupa): Long
 
     @Query("SELECT * FROM Grupa")
     suspend fun getGrupe(): List<Grupa>
@@ -94,16 +96,16 @@ interface ProcvatDao {
     suspend fun updateKorisnik(korisnik: Korisnik): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertKorisnik(korisnik: Korisnik): Int
+    suspend fun insertKorisnik(korisnik: Korisnik): Long
 
     @Query("SELECT * FROM Korisnik")
-    suspend fun  getKorisnici(): List<Korisnik>
+    suspend fun getKorisnici(): List<Korisnik>
 
     @Query("SELECT * FROM Korisnik WHERE _id = :id")
-    suspend fun  getKorisnik(id: Int): Korisnik
+    suspend fun getKorisnik(id: Int): Korisnik
 
     @Query("SELECT * FROM Korisnik WHERE korisnickoIme = :name")
-    suspend fun  getKorisnikByUsername(name: String): Korisnik
+    suspend fun getKorisnikByUsername(name: String): Korisnik
 
     @Query("DELETE FROM Korisnik")
     suspend fun deleteKorisnici(): Int
@@ -117,11 +119,13 @@ interface ProcvatDao {
     suspend fun updateNarudzba(narudzba: Narudzba): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertNarudzba(narudzba: Narudzba): Int
+    suspend fun insertNarudzba(narudzba: Narudzba): Long
 
+    @Transaction
     @Query("SELECT * FROM Narudzba")
     suspend fun getNarudzbe(): List<NarudzbaWithDokumentAndArtiklAndStatusAndKorisnik>
 
+    @Transaction
     @Query("SELECT * FROM Narudzba WHERE _id = :id")
     suspend fun getNarudzba(id: Int): NarudzbaWithDokumentAndArtiklAndStatusAndKorisnik
 
@@ -137,7 +141,7 @@ interface ProcvatDao {
     suspend fun updatePartner(partner: Partner): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertPartner(partner: Partner): Int
+    suspend fun insertPartner(partner: Partner): Long
 
     @Query("SELECT * FROM Partner")
     suspend fun getPartneri(): List<Partner>
@@ -157,11 +161,13 @@ interface ProcvatDao {
     suspend fun updateProdaja(prodaja: Prodaja): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertProdaja(prodaja: Prodaja): Int
+    suspend fun insertProdaja(prodaja: Prodaja): Long
 
+    @Transaction
     @Query("SELECT * FROM Prodaja")
     suspend fun getProdaje(): List<ProdajaWithDokumentAndArtiklAndSkladisteAndStatusAndKorisnik>
 
+    @Transaction
     @Query("SELECT * FROM Prodaja WHERE _id = :id")
     suspend fun getProdaja(id: Int): ProdajaWithDokumentAndArtiklAndSkladisteAndStatusAndKorisnik
 
@@ -177,7 +183,7 @@ interface ProcvatDao {
     suspend fun updateSkladiste(skladiste: Skladiste): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertSkladiste(skladiste: Skladiste): Int
+    suspend fun insertSkladiste(skladiste: Skladiste): Long
 
     @Query("SELECT * FROM Skladiste")
     suspend fun getSkladista(): List<Skladiste>
@@ -197,14 +203,17 @@ interface ProcvatDao {
     suspend fun updateStanjeSkladista(stanjeSkladista: StanjeSkladista): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertStanjeSkladista(stanjeSkladista: StanjeSkladista): Int
+    suspend fun insertStanjeSkladista(stanjeSkladista: StanjeSkladista): Long
 
+    @Transaction
     @Query("SELECT * FROM StanjeSkladista")
     suspend fun getStanjaSkladista(): List<StanjeSkladistaWithArtiklAndSkladiste>
 
+    @Transaction
     @Query("SELECT * FROM StanjeSkladista WHERE skladisteId = :id")
     suspend fun getStanjaSkladistaBySkladisteId(id: Int): List<StanjeSkladistaWithArtiklAndSkladiste>
 
+    @Transaction
     @Query("SELECT * FROM StanjeSkladista WHERE artiklId = :id")
     suspend fun getStanjaSkladistaByArtiklId(id: Int): List<StanjeSkladistaWithArtiklAndSkladiste>
 
@@ -220,7 +229,7 @@ interface ProcvatDao {
     suspend fun updateStatus(status: Status): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertStatus(status: Status): Int
+    suspend fun insertStatus(status: Status): Long
 
     @Query("SELECT * FROM Status")
     suspend fun getStatusi(): List<Status>
@@ -240,14 +249,17 @@ interface ProcvatDao {
     suspend fun updateUnosStanjaArtikla(unosStanjaArtikla: UnosStanjaArtikla): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertUnosStanjaArtikla(unosStanjaArtikla: UnosStanjaArtikla): Int
+    suspend fun insertUnosStanjaArtikla(unosStanjaArtikla: UnosStanjaArtikla): Long
 
+    @Transaction
     @Query("SELECT * FROM UnosStanjaArtikla")
     suspend fun getUnosiStanjaArtikla(): List<UnosStanjaArtiklaWithArtiklAndSkladisteAndKorisnik>
 
+    @Transaction
     @Query("SELECT * FROM UnosStanjaArtikla WHERE artiklId = :artiklId")
     suspend fun getUnosiStanjaArtiklaByArtikl(artiklId: Int): List<UnosStanjaArtiklaWithArtiklAndSkladisteAndKorisnik>
 
+    @Transaction
     @Query("SELECT * FROM UnosStanjaArtikla WHERE skladisteId = :skladisteId")
     suspend fun getUnosiStanjaArtiklaBySkladiste(skladisteId: Int): List<UnosStanjaArtiklaWithArtiklAndSkladisteAndKorisnik>
 
@@ -263,7 +275,7 @@ interface ProcvatDao {
     suspend fun updateVrstaDokumenta(vrstaDokumenta: VrstaDokumenta): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertVrstaDokumenta(vrstaDokumenta: VrstaDokumenta): Int
+    suspend fun insertVrstaDokumenta(vrstaDokumenta: VrstaDokumenta): Long
 
     @Query("SELECT * FROM VrstaDokumenta")
     suspend fun getVrsteDokumenta(): List<VrstaDokumenta>

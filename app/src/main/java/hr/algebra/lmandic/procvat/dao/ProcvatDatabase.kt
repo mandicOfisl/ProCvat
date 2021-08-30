@@ -22,9 +22,10 @@ import hr.algebra.lmandic.procvat.dao.entities.*
         UnosStanjaArtikla::class,
         VrstaDokumenta::class
     ],
-    version = 1
+    version = 1,
+    exportSchema = false
 )
-abstract class ProcvatDatabase : RoomDatabase(), ProcvatDao {
+abstract class ProcvatDatabase : RoomDatabase() {
 
     abstract val procvatDao: ProcvatDao
 
@@ -38,7 +39,7 @@ abstract class ProcvatDatabase : RoomDatabase(), ProcvatDao {
                     context.applicationContext,
                     ProcvatDatabase::class.java,
                     "procvat_db"
-                ).build().also {
+                ).fallbackToDestructiveMigration().build().also {
                     INSTANCE = it
                 }
             }

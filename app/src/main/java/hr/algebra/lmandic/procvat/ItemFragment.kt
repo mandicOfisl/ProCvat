@@ -44,7 +44,7 @@ class ItemFragment : Fragment() {
                             n -> n.artiklId == artikl._id!!
                                 && n.statusId == StatusEnum.NEIZVRSENO.ordinal
                         }
-                        .sumOf { nar -> nar.kolicina ?: 0 }
+                        .sumOf { nar -> nar.kolicina }
                 )
             )
         }

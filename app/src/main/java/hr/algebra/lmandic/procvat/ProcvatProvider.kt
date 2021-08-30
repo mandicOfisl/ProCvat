@@ -115,167 +115,169 @@ class ProcvatProvider : ContentProvider() {
     private lateinit var procvatDao: ProcvatDao
 
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<String>?): Int {
-        var result: Int
+        var result: Int = -1
         
         when(URI_MATCHER.match(uri)){
             ARTIKLI -> {
                 runBlocking { 
-                    result =  procvatDao.deleteArtikli()                    
+                    result = procvatDao.deleteArtikli()
                 }
             }
             ARTIKLI_ID -> {
                 val id = uri.lastPathSegment
                 if (id != null)
                     runBlocking {
-                        result =  procvatDao.deleteArtikl(id.toInt())
+                        result = procvatDao.deleteArtikl(id.toInt())
                     }
             }
             BOJE -> {
                 runBlocking {
-                    result =  procvatDao.deleteBoje()
+                    result = procvatDao.deleteBoje()
                 }
             }
             BOJE_ID -> {
                 val id = uri.lastPathSegment
                 if (id != null)
                     runBlocking {
-                        result =  procvatDao.deleteBoja(id.toInt())
+                        result = procvatDao.deleteBoja(id.toInt())
                     }
             }
             DOKUMENTI -> {
                 runBlocking {
-                    result =  procvatDao.deleteDokumenti()
+                    result = procvatDao.deleteDokumenti()
                 }
             }
             DOKUMENTI_ID -> {
                 val id = uri.lastPathSegment
                 if (id != null)
                     runBlocking {
-                        result =  procvatDao.deleteDokument(id.toInt())
+                        result = procvatDao.deleteDokument(id.toInt())
                     }
             }
             GRUPE -> {
                 runBlocking {
-                    result =  procvatDao.deleteGrupe()
+                    result = procvatDao.deleteGrupe()
                 }
             }
             GRUPE_ID -> {
                 val id = uri.lastPathSegment
                 if (id != null)
                     runBlocking {
-                        result =  procvatDao.deleteGrupa(id.toInt())
+                        result = procvatDao.deleteGrupa(id.toInt())
                     }
             }
             KORISNICI -> {
                 runBlocking {
-                    result =  procvatDao.deleteKorisnici()
+                    result = procvatDao.deleteKorisnici()
                 }
             }
             KORISNICI_ID -> {
                 val id = uri.lastPathSegment
                 if (id != null)
                     runBlocking {
-                        result =  procvatDao.deleteKorisnik(id.toInt())
+                        result = procvatDao.deleteKorisnik(id.toInt())
                     }
             }
             NARUDZBE -> {
                 runBlocking {
-                    result =  procvatDao.deleteNarudzbe()
+                    result = procvatDao.deleteNarudzbe()
                 }
             }
             NARUDZBE_ID -> {
                 val id = uri.lastPathSegment
                 if (id != null)
                     runBlocking {
-                        result =  procvatDao.deleteNarudzba(id.toInt())
+                        result = procvatDao.deleteNarudzba(id.toInt())
                     }
             }
             PARTNERI -> {
                 runBlocking {
-                    result =  procvatDao.deletePartneri()
+                    result = procvatDao.deletePartneri()
                 }
             }
             PARTNERI_ID -> {
                 val id = uri.lastPathSegment
                 if (id != null)
                     runBlocking {
-                        result =  procvatDao.deletePartner(id.toInt())
+                        result = procvatDao.deletePartner(id.toInt())
                     }
             }
             PRODAJE -> {
                 runBlocking {
-                    result =  procvatDao.deleteProdaje()
+                    result = procvatDao.deleteProdaje()
                 }
             }
             PRODAJE_ID -> {
                 val id = uri.lastPathSegment
                 if (id != null)
                     runBlocking {
-                        result =  procvatDao.deleteProdaja(id.toInt())
+                        result = procvatDao.deleteProdaja(id.toInt())
                     }
             }
             SKLADISTA -> {
                 runBlocking {
-                    result =  procvatDao.deleteSkladista()
+                    result = procvatDao.deleteSkladista()
                 }
             }
             SKLADISTA_ID -> {
                 val id = uri.lastPathSegment
                 if (id != null)
                     runBlocking {
-                        result =  procvatDao.deleteSkladiste(id.toInt())
+                        result = procvatDao.deleteSkladiste(id.toInt())
                     }
             }
             STANJA_SKLADISTA -> {
                 runBlocking {
-                    result =  procvatDao.deleteStanjaSkladista()
+                    result = procvatDao.deleteStanjaSkladista()
                 }
             }
             STANJA_SKLADISTA_ID -> {
                 val id = uri.lastPathSegment
                 if (id != null)
                     runBlocking {
-                        result =  procvatDao.deleteStanjeSkladista(id.toInt())
+                        result = procvatDao.deleteStanjeSkladista(id.toInt())
                     }
             }
             STATUSI -> {
                 runBlocking {
-                    result =  procvatDao.deleteStatusi()
+                    result = procvatDao.deleteStatusi()
                 }
             }
             STATUSI_ID -> {
                 val id = uri.lastPathSegment
                 if (id != null)
                     runBlocking {
-                        result =  procvatDao.deleteStatus(id.toInt())
+                        result = procvatDao.deleteStatus(id.toInt())
                     }
             }
             UNOSI_STANJA_ARTIKLA -> {
                 runBlocking {
-                    result =  procvatDao.deleteUnosiStanjaArtikla()
+                    result = procvatDao.deleteUnosiStanjaArtikla()
                 }
             }
             UNOSI_STANJA_ARTIKLA_ID -> {
                 val id = uri.lastPathSegment
                 if (id != null)
                     runBlocking {
-                        result =  procvatDao.deleteUnosStanjaArtikla(id.toInt())
+                        result = procvatDao.deleteUnosStanjaArtikla(id.toInt())
                     }
             }
             VRSTE_DOKUMENTA -> {
                 runBlocking {
-                    result =  procvatDao.deleteVrsteDokumenta()
+                    result = procvatDao.deleteVrsteDokumenta()
                 }
             }
             VRSTE_DOKUMENTA_ID -> {
                 val id = uri.lastPathSegment
                 if (id != null)
                     runBlocking {
-                        result =  procvatDao.deleteVrstaDokumenta(id.toInt())
+                        result = procvatDao.deleteVrstaDokumenta(id.toInt())
                     }
             }
+            else -> throw IllegalArgumentException("Wrong URI!")
         }
-        throw IllegalArgumentException("Wrong URI!")
+
+        return result
     }
 
     override fun getType(uri: Uri): String {
@@ -318,79 +320,79 @@ class ProcvatProvider : ContentProvider() {
             ARTIKLI -> {
                 contentUri = ARTIKLI_PROVIDER_CONTENT_URI
                 runBlocking {
-                    result = procvatDao.insertArtikl(Artikl.fromContentValues(values!!))
+                    result = procvatDao.insertArtikl(Artikl.fromContentValues(values!!)).toInt()
                 }
             }
             BOJE -> {
                 contentUri = BOJE_PROVIDER_CONTENT_URI
                 runBlocking {
-                    result = procvatDao.insertBoja(Boja.fromContentValues(values!!))
+                    result = procvatDao.insertBoja(Boja.fromContentValues(values!!)).toInt()
                 }
             }
             DOKUMENTI -> {
                 contentUri = DOKUMENTI_PROVIDER_CONTENT_URI
                 runBlocking {
-                    result = procvatDao.insertDokument(Dokument.fromContentValues(values!!))
+                    result = procvatDao.insertDokument(Dokument.fromContentValues(values!!)).toInt()
                 }
             }
             GRUPE -> {
                 contentUri = GRUPE_PROVIDER_CONTENT_URI
                 runBlocking {
-                    result = procvatDao.insertGrupa(Grupa.fromContentValues(values!!))
+                    result = procvatDao.insertGrupa(Grupa.fromContentValues(values!!)).toInt()
                 }
             }
             KORISNICI -> {
                 contentUri = KORISNICI_PROVIDER_CONTENT_URI
                 runBlocking {
-                    result = procvatDao.insertKorisnik(Korisnik.fromContentValues(values!!))
+                    result = procvatDao.insertKorisnik(Korisnik.fromContentValues(values!!)).toInt()
                 }
             }
             NARUDZBE -> {
                 contentUri = NARUDZBE_PROVIDER_CONTENT_URI
                 runBlocking {
-                    result = procvatDao.insertNarudzba(Narudzba.fromContentValues(values!!))
+                    result = procvatDao.insertNarudzba(Narudzba.fromContentValues(values!!)).toInt()
                 }
             }
             PARTNERI -> {
                 contentUri = PARTNERI_PROVIDER_CONTENT_URI
                 runBlocking {
-                    result = procvatDao.insertPartner(Partner.fromContentValues(values!!))
+                    result = procvatDao.insertPartner(Partner.fromContentValues(values!!)).toInt()
                 }
             }
             PRODAJE -> {
                 contentUri = PRODAJE_PROVIDER_CONTENT_URI
                 runBlocking {
-                    result = procvatDao.insertProdaja(Prodaja.fromContentValues(values!!))
+                    result = procvatDao.insertProdaja(Prodaja.fromContentValues(values!!)).toInt()
                 }
             }
             SKLADISTA -> {
                 contentUri = SKLADISTA_PROVIDER_CONTENT_URI
                 runBlocking {
-                    result = procvatDao.insertSkladiste(Skladiste.fromContentValues(values!!))
+                    result = procvatDao.insertSkladiste(Skladiste.fromContentValues(values!!)).toInt()
                 }
             }
             STANJA_SKLADISTA -> {
                 contentUri = STANJA_SKLADISTA_PROVIDER_CONTENT_URI
                 runBlocking {
-                    result = procvatDao.insertStanjeSkladista(StanjeSkladista.fromContentValues(values!!))
+                    result = procvatDao.insertStanjeSkladista(StanjeSkladista.fromContentValues(values!!)).toInt()
                 }
             }
             STATUSI -> {
                 contentUri = STATUSI_PROVIDER_CONTENT_URI
                 runBlocking {
-                    result = procvatDao.insertStatus(Status.fromContentValues(values!!))
+                    result = procvatDao.insertStatus(Status.fromContentValues(values!!)).toInt()
                 }
             }
             UNOSI_STANJA_ARTIKLA -> {
                 contentUri = UNOSI_STANJA_ARTIKALA_PROVIDER_CONTENT_URI
                 runBlocking {
-                    result = procvatDao.insertUnosStanjaArtikla(UnosStanjaArtikla.fromContentValues(values!!))
+                    result = procvatDao.insertUnosStanjaArtikla(UnosStanjaArtikla.fromContentValues(values!!)).toInt()
                 }
             }
             VRSTE_DOKUMENTA -> {
                 contentUri = VRSTE_DOKUMENTA_PROVIDER_CONTENT_URI
                 runBlocking {
-                    result = procvatDao.insertVrstaDokumenta(VrstaDokumenta.fromContentValues(values!!))
+                    result = procvatDao.insertVrstaDokumenta(VrstaDokumenta.fromContentValues(values!!)).toInt()
                 }
             }
             else -> throw IllegalArgumentException("Wrong uri!")
@@ -400,7 +402,7 @@ class ProcvatProvider : ContentProvider() {
     }
 
     override fun onCreate(): Boolean {
-        procvatDao = ProcvatDatabase.getInstance(context!!)
+        procvatDao = ProcvatDatabase.getInstance(context!!).procvatDao
         return true
     }
 
@@ -916,7 +918,7 @@ class ProcvatProvider : ContentProvider() {
                     unosiStanja =
                         when {
                             selectionArgs.isNullOrEmpty() -> {
-                                procvatDao.getUnosiStanjaArtikla()                                
+                                procvatDao.getUnosiStanjaArtikla()
                             }
                             selection == UnosStanjaArtikla::artiklId.name -> {
                                 procvatDao.getUnosiStanjaArtiklaByArtikl(selectionArgs.first().toInt())

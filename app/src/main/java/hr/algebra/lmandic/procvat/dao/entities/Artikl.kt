@@ -2,11 +2,12 @@ package hr.algebra.lmandic.procvat.dao.entities
 
 import android.content.ContentValues
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(indices = [Index(value = ["barkod"], unique = true)])
 data class Artikl (
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     var _id: Int?,
     var naziv: String,
     var grupaId: Int,
@@ -22,7 +23,7 @@ data class Artikl (
             Artikl(
                 if (values.containsKey(Artikl::_id.name)) values.getAsInteger(Artikl::_id.name) else null,
                 values.getAsString(Artikl::naziv.name),
-                values.getAsInteger(Artikl::_id.name),
+                values.getAsInteger(Artikl::grupaId.name),
                 values.getAsInteger(Artikl::jedinicnaKolicina.name),
                 values.getAsInteger(Artikl::kolicinaUPakiranju.name),
                 if (values.containsKey(Artikl::bojaId.name)) values.getAsInteger(Artikl::bojaId.name) else null,

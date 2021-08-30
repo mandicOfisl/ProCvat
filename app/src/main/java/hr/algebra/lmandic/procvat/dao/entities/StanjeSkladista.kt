@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class StanjeSkladista(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     var _id: Int?,
     var artiklId: Int,
     var skladisteId: Int,
