@@ -22,6 +22,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
+        //insertDummyData()
         startAnimations()
         redirect()
     }
@@ -87,13 +88,13 @@ class SplashScreenActivity : AppCompatActivity() {
         }
 
         val boje = mutableListOf<Boja>(
-            Boja(null, "#FF0000", "Crvena"),
-            Boja(null, "#00FF00", "Zelena"),
-            Boja(null, "#0000FF", "Plava"),
-            Boja(null, "#FFDD00", "Žuta"),
-            Boja(null, "#FF5BC4", "Roza"),
-            Boja(null, "#FF6D00", "Narančasta"),
-            Boja(null, "#880DFF", "Ljubičasta")
+            Boja(0, "#FF0000", "Crvena"),
+            Boja(0, "#00FF00", "Zelena"),
+            Boja(0, "#0000FF", "Plava"),
+            Boja(0, "#FFDD00", "Žuta"),
+            Boja(0, "#FF5BC4", "Roza"),
+            Boja(0, "#FF6D00", "Narančasta"),
+            Boja(0, "#880DFF", "Ljubičasta")
         )
 
         for (boja: Boja in boje){
@@ -107,8 +108,8 @@ class SplashScreenActivity : AppCompatActivity() {
 
 
         val statusi = mutableListOf<Status>(
-            Status(null, "Na skladištu", "Spremno za prodaju"),
-            Status(null, "Nije za prodaju", "Uvenulo")
+            Status(0, "Na skladištu", "Spremno za prodaju"),
+            Status(0, "Nije za prodaju", "Uvenulo")
         )
 
         for (status: Status in statusi){
@@ -136,6 +137,7 @@ class SplashScreenActivity : AppCompatActivity() {
                 put(Artikl::grupaId.name, artikl.grupaId)
                 put(Artikl::jedinicnaKolicina.name, artikl.jedinicnaKolicina)
                 put(Artikl::kolicinaUPakiranju.name, artikl.kolicinaUPakiranju)
+                put(Artikl::bojaId.name, artikl.bojaId)
                 put(Artikl::statusId.name, artikl.statusId)
             }
 

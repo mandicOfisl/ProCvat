@@ -40,7 +40,7 @@ class LoginActivity : AppCompatActivity() {
         binding.etPassword.addTextChangedListener(textWatcher)
 
         binding.btnLogin.setOnClickListener {
-            if (authenticateUser()) redirect() else handleIncorrectInput()
+            if (!authenticateUser()) handleIncorrectInput()
         }
 
         binding.btnNewUser?.setOnClickListener {
@@ -72,15 +72,21 @@ class LoginActivity : AppCompatActivity() {
 
         if (korisnikCursor != null){
             while (korisnikCursor.moveToNext()){
-                if (korisnikCursor.getString(korisnikCursor.getColumnIndex(Korisnik::lozinka.name))
-                    == inputPass){
+                if (korisnikCursor.getString(
+                        korisnikCursor
+                            .getColumnIndex(Korisnik::lozinka.name))
+                                == inputPass){
                         sendBroadcast<ProcvatReceiver>()
+                        binding.etUsername.setText("")
+                        binding.etPassword.setText("")
                         return true
                 }
             }
         }
 
         korisnikCursor?.close()
+
+        binding.etPassword.setText("")
 
         return false
     }

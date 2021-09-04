@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragments"
+    app:startDestination="@id/menuMenu">
+
+    <fragment
+        android:id="@+id/menuMenu"
+        android:label="Izbornik"
+        android:name="hr.algebra.lmandic.procvat.MenuFragment"
+        tools:layout="@layout/fragment_menu" />
+
+    <fragment
+        android:id="@+id/menuSkladiste"
+        android:label="Stanje skladišta"
+        android:name="hr.algebra.lmandic.procvat.SkladisteFragment"
+        tools:layout="@layout/fragment_skladiste" />
+
+
+</navigation>

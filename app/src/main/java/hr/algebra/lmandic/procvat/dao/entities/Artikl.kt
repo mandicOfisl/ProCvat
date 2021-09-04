@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(indices = [Index(value = ["barkod"], unique = true)])
+@Entity(indices = [Index(value = ["naziv", "barkod"], unique = true)])
 data class Artikl (
     @PrimaryKey(autoGenerate = true)
     var _id: Int?,

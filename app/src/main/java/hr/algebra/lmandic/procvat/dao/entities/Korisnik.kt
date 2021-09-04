@@ -15,7 +15,7 @@ data class Korisnik(
     companion object {
         fun fromContentValues(values: ContentValues): Korisnik =
             Korisnik(
-                values.getAsInteger(Korisnik::_id.name),
+                values.getAsInteger(Korisnik::_id.name) ?: 0,
                 values.getAsString(Korisnik::korisnickoIme.name),
                 values.getAsString(Korisnik::lozinka.name)
             )

@@ -1,6 +1,7 @@
 package hr.algebra.lmandic.procvat
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import hr.algebra.lmandic.procvat.framework.startActivity
 import hr.algebra.lmandic.procvat.model.FlowerItem
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 import java.io.File
@@ -25,15 +27,15 @@ class ItemAdapter(private val items: MutableList<FlowerItem>, private val contex
             private val tvSkladista: TextView = itemView.findViewById(R.id.tvKolicinaNaSkladistu)
 
             fun bind(flowerItem: FlowerItem){
-                ivColorRec.foreground = ColorDrawable(flowerItem.colorHex.toInt(16))
+                ivColorRec.foreground = ColorDrawable(Color.parseColor(flowerItem.bojaHex))
 
                 Picasso.get()
-                    .load(File(flowerItem.picturePath!!))
+                    .load(File(flowerItem.artikl.picturePath ?: ""))
                     .error(R.drawable.ic_flower)
                     .transform(RoundedCornersTransformation(20, 4))
                     .into(ivPicture)
 
-                tvNaziv.text = flowerItem.name
+                tvNaziv.text = flowerItem.artikl.naziv
 
                 tvNarudzbe.text = flowerItem.kolicinaZaNarudzbe.toString()
 
@@ -50,7 +52,7 @@ class ItemAdapter(private val items: MutableList<FlowerItem>, private val contex
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.itemView.setOnClickListener {
-            //context.startActivity<FlowerDetailsActivity>()
+            context.startActivity<ItemPagerActivity>(ITEM_POSITION, position)
         }
 
         holder.bind(items[position])

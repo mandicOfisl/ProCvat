@@ -10,6 +10,6 @@ class ProcvatReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         context.setBooleanPreference("first_run", false)
-        context.startActivity<MenuActivity>()
+        context.startActivity<HostActivity>()
     }
 }

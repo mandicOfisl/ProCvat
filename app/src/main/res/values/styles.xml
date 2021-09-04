@@ -9,7 +9,7 @@
     </style>
 
     <style name="SplashScreenTheme" parent="AppTheme">
-        <item name="android:textSize">50sp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">monospace</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>

@@ -29,4 +29,10 @@
     <string name="kupci_i_narudzbe">Kupci i narudžbe</string>
     <string name="unos_artikala">Unos artikala</string>
     <string name="korisnicke_postavke">Korisničke postavke</string>
+    <string name="naziv">Naziv</string>
+    <string name="grupa">Grupa</string>
+    <string name="boja">Boja</string>
+    <string name="status">Status</string>
+    <string name="jedinicna_kolicina">Jedinična količina</string>
+    <string name="količina_u_pakiranju">Količina u pakiranju</string>
 </resources>

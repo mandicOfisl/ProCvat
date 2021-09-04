@@ -9,14 +9,9 @@ import android.view.animation.AnimationUtils
 import androidx.core.database.getIntOrNull
 import androidx.core.database.getStringOrNull
 import androidx.preference.PreferenceManager
-import hr.algebra.lmandic.procvat.ARTIKLI_PROVIDER_CONTENT_URI
-import hr.algebra.lmandic.procvat.BOJE_PROVIDER_CONTENT_URI
-import hr.algebra.lmandic.procvat.NARUDZBE_PROVIDER_CONTENT_URI
-import hr.algebra.lmandic.procvat.STANJA_SKLADISTA_PROVIDER_CONTENT_URI
-import hr.algebra.lmandic.procvat.dao.entities.Artikl
-import hr.algebra.lmandic.procvat.dao.entities.Boja
-import hr.algebra.lmandic.procvat.dao.entities.Narudzba
-import hr.algebra.lmandic.procvat.dao.entities.StanjeSkladista
+import hr.algebra.lmandic.procvat.*
+import hr.algebra.lmandic.procvat.dao.entities.*
+import hr.algebra.lmandic.procvat.model.FlowerItem
 
 
 fun View.applyAnimation(resourceId: Int)
@@ -56,6 +51,32 @@ fun Context.fetchArtikli() : MutableList<Artikl> {
     artiklCursor?.close()
 
     return items
+}
+
+fun Context.fetchGrupe() : MutableList<Grupa> {
+    val grupe = mutableListOf<Grupa>()
+
+    val grupaCuror = contentResolver.query(
+        GRUPE_PROVIDER_CONTENT_URI,
+        null,
+        null,
+        null,
+        null
+    )
+    if (grupaCuror != null) {
+        while (grupaCuror.moveToNext()) {
+            grupe.add(
+                Grupa(
+                    grupaCuror.getInt(grupaCuror.getColumnIndex(Grupa::_id.name)),
+                    grupaCuror.getString(grupaCuror.getColumnIndex(Grupa::naziv.name))
+                )
+            )
+        }
+    }
+
+    grupaCuror?.close()
+
+    return grupe
 }
 
 fun Context.fetchBoje() : MutableList<Boja> {
@@ -144,6 +165,38 @@ fun Context.fetchNarudzbe() : MutableList<Narudzba>{
 
     return narudzbe
 }
+
+fun Context.fetchFlowerItems() : MutableList<FlowerItem>{
+    var flowers: MutableList<FlowerItem> = mutableListOf()
+
+    val artikli = fetchArtikli()
+    val stanja = fetchStanjaSkladista()
+    val narudzbe = fetchNarudzbe()
+    val boje = fetchBoje()
+    val grupe = fetchGrupe()
+
+    for (artikl in artikli){
+        flowers.add(
+            FlowerItem(
+                artikl,
+                grupe.first {g -> g._id == artikl.grupaId}.naziv,
+                boje.first {b -> b._id == artikl.bojaId}.naziv,
+                boje.first { b -> b._id == artikl.bojaId }.bojaHex,
+                stanja
+                    .filter { s -> s.artiklId == artikl._id!! }
+                    .sumOf { stanje -> stanje.kolicina },
+                narudzbe
+                    .filter {
+                            n -> n.artiklId == artikl._id!!
+                    }
+                    .sumOf { nar -> nar.kolicina }
+            )
+        )
+    }
+
+    return flowers
+}
+
 
 fun Context.setBooleanPreference(key: String, value: Boolean) =
     PreferenceManager.getDefaultSharedPreferences(this)

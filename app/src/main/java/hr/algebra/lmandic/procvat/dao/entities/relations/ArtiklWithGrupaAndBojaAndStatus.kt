@@ -10,15 +10,15 @@ import hr.algebra.lmandic.procvat.dao.entities.Status
 data class ArtiklWithGrupaAndBojaAndStatus(
     @Embedded val artikl: Artikl,
     @Relation(
-       entity = Grupa::class,
-       entityColumn =  "_id",
-       parentColumn = "grupaId"
+        entity = Grupa::class,
+        entityColumn =  "_id",
+        parentColumn = "grupaId"
     )
     val grupa: Grupa,
     @Relation(
-       entity = Boja::class,
-       entityColumn =  "_id",
-       parentColumn = "bojaId"
+        entity = Boja::class,
+        entityColumn =  "_id",
+        parentColumn = "bojaId"
     )
     val boja: Boja,
     @Relation(

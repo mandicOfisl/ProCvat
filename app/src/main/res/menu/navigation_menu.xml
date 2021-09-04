@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menuMenu"
+        android:title="Izbornik"
+        android:icon="@drawable/ic_baseline_menu_open"/>
+
+    <item
+        android:id="@+id/menuSkladiste"
+        android:title="@string/stanje_skladista"
+        android:icon="@drawable/ic_warehouse"/>
+
+    <item
+        android:id="@+id/menuUnos"
+        android:title="@string/unos_artikala"
+        android:icon="@drawable/ic_flower"/>
+
+    <item
+        android:id="@+id/menuKupci"
+        android:title="@string/kupci_i_narudzbe"
+        android:icon="@drawable/ic_flower"/>
+
+    <item
+        android:id="@+id/menuPostavke"
+        android:title="@string/korisnicke_postavke"
+        android:icon="@drawable/ic_flower"/>
+
+</menu>
